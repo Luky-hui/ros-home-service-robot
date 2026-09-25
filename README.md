@@ -302,8 +302,6 @@ roslaunch bobac3_navigation demo_nav_2d.launch map_file_name:=national_2026 open
 
 录屏脚本位于 `scripts/` 目录，完整用法见 [docs/COMMANDS.md](docs/COMMANDS.md)。
 
-如需同时录制系统声音与麦克风，可使用 `scripts/` 中的完整音频录制脚本。
-
 ---
 
 ## 项目边界
@@ -333,5 +331,3 @@ roslaunch bobac3_navigation demo_nav_2d.launch map_file_name:=national_2026 open
 ## 说明
 
 本仓库整理为作品集项目，重点展示 ROS 服务机器人从感知、交互、决策到执行的完整工程链路。
-
-公开版本已移除运行日志、视频、旧备份、人脸样本与本地隐私路径。第三方组件遵循各自原始许可证与版权声明。
