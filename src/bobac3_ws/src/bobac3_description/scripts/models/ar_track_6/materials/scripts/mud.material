@@ -1,0 +1,19 @@
+material reinovo/ar_track_6
+{
+	technique
+	{
+		pass
+		{
+			ambient 1 1 1 1.0
+			diffuse 1 1 1 1.0
+			specular 0.2 0.2 0.2 1.0 12.5
+
+			texture_unit
+			{
+				texture MarkerData_6.png
+				filtering anistropic
+				max_anisotropy 16
+			}
+		}
+	}
+}

@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- 启动RViz并加载map_edit配置 -->
+  <node name="rviz_edit" pkg="rviz" type="rviz" 
+        args="-d $(find ros_map_edit)/config/map_edit.rviz" 
+        output="screen"/>
+  
+  <!-- 可选：启动一个简单的FTP服务器用于测试 -->
+  <!-- 注意：需要先安装python3-pyftpdlib -->
+  <!-- sudo apt install python3-pyftpdlib -->
+  
+  <!-- 启动测试FTP服务器 (可选) -->
+  <!-- 
+  <node name="test_ftp_server" pkg="ros_map_edit" type="test_ftp_server.py" 
+        output="screen" required="false"/>
+  -->
+  
+  <param name="use_sim_time" value="false"/>
+  
+  <!-- 提示信息 -->
+  <arg name="info" default="
+  ==========================================
+  ros_map_edit UI测试启动成功!
+  
+  使用说明:
+  1. 在RViz中添加ros_map_edit面板:
+     - Panels -> Add New Panel -> ros_map_edit -> MapEditPanel
+  
+  2. 本地地图测试:
+     - 切换到'本地地图'选项卡
+     - 点击'选择本地地图文件'
+     - 选择一个YAML或PGM文件
+  
+  3. 远程地图测试:
+     - 切换到'远程地图 (FTP)'选项卡
+     - 配置FTP服务器信息
+     - 点击'测试连接'
+     - 选择文件并下载
+  
+  更多详情请参考: RVIZ_UI_USAGE.md
+  ==========================================
+  "/>
+  
+</launch> 

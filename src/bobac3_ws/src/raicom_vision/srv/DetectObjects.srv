@@ -1,0 +1,12 @@
+string image_topic
+string[] labels
+float32 confidence
+---
+bool success
+string message
+string[] labels
+float32[] confidences
+float32[] xmin
+float32[] ymin
+float32[] xmax
+float32[] ymax

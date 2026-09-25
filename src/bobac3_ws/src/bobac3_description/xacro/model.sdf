@@ -1,0 +1,67 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <model name="cylinder_obstacle">
+    <pose>0 0 0.0 0 0 0</pose>
+
+    <link name="cylinder_link">
+      <inertial><mass>1.0</mass></inertial>
+      <collision name="collision">
+        <geometry><cylinder><radius>0.05</radius><length>0.4</length></cylinder></geometry>
+      </collision>
+      <visual name="visual">
+        <geometry><cylinder><radius>0.05</radius><length>0.4</length></cylinder></geometry>
+      </visual>
+      <sensor type="ray" name="model_lidar">
+        <pose>0 0 -0.15 0 0 0</pose>
+        <visualize>false</visualize>
+        <update_rate>10</update_rate>
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>720</samples>
+              <resolution>1</resolution>
+              <min_angle>-3.14159</min_angle>
+              <max_angle>3.14159</max_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>0.15</min>
+            <max>30.0</max>
+            <resolution>0.01</resolution>
+          </range>
+          <noise>
+            <type>gaussian</type>
+            <!-- Noise parameters based on published spec for Hokuyo laser
+                 achieving "+-30mm" accuracy at range < 10m.  A mean of 0.0m and
+                 stddev of 0.01m will put 99.7% of samples within 0.03m of the true
+                 reading. -->
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+        </ray>
+        <plugin name="gazebo_ros_laser1" filename="libgazebo_ros_laser.so">
+          <topicName>/cylinder_scan</topicName>
+          <frameName>cylinder_link1</frameName>
+        </plugin>
+      </sensor>
+
+      <!-- <sensor name="model_lidar" type="ray">
+        <pose>0 0 0.5 0 0 0</pose>
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>720</samples>
+              <min_angle>-3.14159</min_angle>
+              <max_angle>3.14159</max_angle>
+            </horizontal>
+          </scan>
+          <range><min>0.2</min><max>50.0</max></range>
+        </ray>
+        <plugin name="gazebo_ros_laser" filename="libgazebo_ros_laser.so">
+          <topicName>/cylinder_scan</topicName>
+          <frameName>cylinder_link1</frameName>
+        </plugin>
+      </sensor> -->
+    </link>
+  </model>
+</sdf>

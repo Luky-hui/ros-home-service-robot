@@ -1,0 +1,27 @@
+<launch>
+
+
+	<!--ar码的边长，单位cm-->
+	<arg name="marker_size" default="5" />
+	<!--二次定位配置文件-->
+    <arg name="ar_pose_config" default="$(find ar_pose)/config/$(optenv REI_ROBOT bobac3sim).yaml"/>
+    <arg name="cam_image_topic" default="/bottom_camera/image_raw" />
+    <arg name="cam_info_topic" default="/bottom_camera/camera_info" />
+
+	<group ns="base_camera">
+		<!--打开individualMarkersNoKinect节点并映射为ar_track_alvar节点-->
+		<node name="ar_track_alvar" pkg="ar_track_alvar" type="individualMarkersNoKinect">
+			<param name="marker_size" type="double" value="$(arg marker_size)" />
+			<param name="max_new_marker_error" type="double" value="0.08" />
+			<param name="max_track_error" type="double" value="0.2" />
+			<param name="output_frame" type="string" value="base_link" />
+			<remap from="camera_image" to="$(arg cam_image_topic)" />
+			<remap from="camera_info" to="$(arg cam_info_topic)" />
+			<!-- <param name="special_detect" type="bool" value="false" /> -->
+			<!-- <param name="special_id" type="int" value="0" /> -->
+		</node>
+	</group>
+	<node pkg="ar_pose" type="pose_adjust" name="base_pose_adjust">
+        <rosparam command="load" file="$(arg ar_pose_config)"/>
+    </node>
+</launch>

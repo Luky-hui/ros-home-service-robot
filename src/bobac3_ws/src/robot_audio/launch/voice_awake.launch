@@ -1,0 +1,3 @@
+<launch>
+  <node name="voice_awake" pkg="robot_audio" type="voice_awake_node" output="screen"/>
+</launch>

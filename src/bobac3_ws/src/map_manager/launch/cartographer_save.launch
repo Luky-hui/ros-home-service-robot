@@ -1,0 +1,11 @@
+<launch>
+  <arg name="map_filename" default="test"/>
+  <arg name="trajectory_id" default="0"/>
+  <arg name="include_unfinished_submaps" default="true"/>
+  <arg name="map_directory" default="$(env MAP_DIRECTORY)"/>
+  <node pkg="map_manager" type="cartographer_map_save_node" name="map_save" output="screen">
+    <param name="map_filename" value="$(arg map_directory)/$(arg map_filename).pbstream"/>
+    <param name="trajectory_id" value="$(arg trajectory_id)"/>
+    <param name="include_unfinished_submaps" value="$(arg include_unfinished_submaps)"/>
+  </node>
+</launch>

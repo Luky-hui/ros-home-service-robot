@@ -1,0 +1,4 @@
+<launch>
+    <!-- <node pkg="rei_voice" name="rei_voice_node" type="rei_voice_node" output="screen"/> -->
+    <node pkg="rei_voice" name="robot_control" type="robot_control.py" output="screen"/>
+</launch>

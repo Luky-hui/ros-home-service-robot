@@ -1,0 +1,14 @@
+<?xml version='1.0'?>
+<sdf version='1.7'>
+  <model name='rei_beijing'>
+    <link name='link_0'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://reinovo_raicom_map/rei_beijing/meshes/beijing.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+  </model>
+</sdf>

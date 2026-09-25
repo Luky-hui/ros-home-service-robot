@@ -1,0 +1,9 @@
+<launch>
+    <arg name="camera_topic" default="/head_camera/image_raw"/>
+    <arg name="use_usb_camera" default="true"/>
+
+    <include if="$(arg use_usb_camera)" file="$(find ar_pose)/launch/usbcam_head.launch"/>
+    <node name="face_detection" pkg="face_rec" type="face_detection.py" output="screen">
+        <param name="camera_topic" value="$(arg camera_topic)"/>
+    </node>
+</launch>

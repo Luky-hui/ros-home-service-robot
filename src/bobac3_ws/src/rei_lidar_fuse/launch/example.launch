@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<launch>
+    <node pkg="nodelet" type="nodelet" name="lidar_fuse" args="load rei_lidar_fuse/LidarFuse ydlidar_manager" output="screen"  respawn="false">
+        <param name="frame_id"         type="string" value="fuse_lidar_link"/>  
+        <param name="front_frame_id"     type="string" value="front_lidar_link"/>
+        <param name="rear_frame_id"     type="string" value="rear_lidar_link"/>
+        <param name="front_topic"     type="string" value="/front_lidar/scan"/>
+        <param name="rear_topic"     type="string" value="/rear_lidar/scan"/>
+        <param name="angle_min" value="-3.14159"/>
+        <param name="angle_max" value="3.14159"/>
+        <param name="angle_increment" value="0.014646119438111782"/>
+        <param name="scan_time" value="0.10681699961423874"/>
+        <param name="range_min" value="0.20"/>
+        <param name="range_max" value="6.0"/>
+    </node>
+</launch>

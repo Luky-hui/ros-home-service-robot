@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<robot name="custom_roller" xmlns:xacro="http://wiki.ros.org/xacro">
+  <xacro:macro name="custom_roller" params="prefix parent index xyz rpy sim">
+    <link name="${prefix}/roller_${index}_link">
+      <inertial>
+        <inertia ixx="1e-6" ixy="0.0" ixz="0.0" iyy="1e-6" iyz="0.0" izz="1e-7"/>
+        <mass value="0.010"/>
+      </inertial>
+      <visual>
+        <geometry>
+          <cylinder radius="0.008" length="0.0260"/>
+        </geometry>
+      </visual>
+      <collision>
+        <geometry>
+          <cylinder radius="0.008" length="0.0266"/>
+        </geometry>
+      </collision>
+    </link>
+    <joint name="${prefix}/roller_${index}_joint" type="continuous" > 
+      <parent link="${prefix}/${parent}" />
+      <child link="${prefix}/roller_${index}_link" />
+      <origin xyz="${xyz}"
+        rpy="${rpy}" />
+      <axis xyz="0 0 1"/>
+      <limit effort="1000" velocity="31.4"/>
+    </joint>
+    <xacro:if value="${sim}">
+      <gazebo reference="${prefix}/roller_${index}_link">
+        <material>Gazebo/Black</material>
+        <mu1 value="5.0"/>
+        <mu2 value="6.0"/>
+        <kp value="100.0" />
+        <kd value="10.0" />
+      </gazebo>
+    </xacro:if>
+  </xacro:macro>
+</robot>

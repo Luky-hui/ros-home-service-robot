@@ -1,0 +1,6 @@
+<launch>
+  <node pkg="raicom_supervisor"
+        type="raicom_supervisor_node.py"
+        name="raicom_supervisor"
+        output="screen"/>
+</launch>

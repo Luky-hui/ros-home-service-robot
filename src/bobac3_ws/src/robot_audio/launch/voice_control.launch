@@ -1,0 +1,3 @@
+<launch>
+  <node name="voice_control" pkg="robot_audio" type="voice_control_node" output="screen"/>
+</launch>

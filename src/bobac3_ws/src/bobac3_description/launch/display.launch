@@ -1,0 +1,21 @@
+<launch>
+  <arg name="open_rviz" default="false"/>
+  <arg name="laser_type" default="$(env LASER_TYPE)"/>
+  <!--param
+    name="robot_description"
+    textfile="$(find bobac3_description)/urdf/bobac3_description.urdf" /-->
+  <param name = "robot_description" 
+    command="$(find xacro)/xacro $(find bobac3_description)/xacro/bobac3_serverbot.xacro sim:=0 laser_type:=$(arg laser_type)"/>
+  <node
+    name="robot_state_publisher"
+    pkg="robot_state_publisher"
+    type="robot_state_publisher" />
+  <node
+    name="joint_state_publisher"
+    pkg="joint_state_publisher"
+    type="joint_state_publisher" />
+  <group if="$(arg open_rviz)"> 
+    <node pkg="rviz" type="rviz" name="rviz"
+          args="-d $(find bobac3_description)/rviz/urdf.rviz"/>
+  </group>
+</launch>

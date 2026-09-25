@@ -1,0 +1,217 @@
+waypoints:
+  start:
+    frame_id: map
+    x: 0.070
+    y: -0.100
+    yaw: -0.008
+  corridor:
+    frame_id: map
+    x: 1.105
+    y: 1.091
+    yaw: -0.017
+  restaurant:
+    frame_id: map
+    x: 2.571
+    y: 0.090
+    yaw: -0.000
+  kitchen:
+    frame_id: map
+    x: 2.551
+    y: 1.091
+    yaw: -0.000
+  living_room:
+    frame_id: map
+    x: 1.114
+    y: 2.100
+    yaw: -0.000
+  bedroom:
+    frame_id: map
+    x: 2.551
+    y: 2.114
+    yaw: -0.000
+  charge:
+    frame_id: map
+    x: 0.344
+    y: 2.043
+    yaw: -1.574
+
+navigation:
+  action_server: /move_base
+  fallback_action_server: /move_base_node
+  server_wait: 120.0
+  goal_timeout: 120.0
+  return_to_start: true
+
+arrival_pause:
+  enabled: true
+  seconds: 5.0
+  waypoints:
+    - restaurant
+    - kitchen
+    - living_room
+    - bedroom
+    - corridor
+    - start
+    - charge
+
+interaction:
+  face_topic: /face_detection
+  command_topic: /service_group_mission/voice_command
+  intent_topic: /local_voice/intent
+  tts_service: /voice_tts
+  wake_prompt: "你好，需要帮助吗？"
+  accept: "好的，请跟我来。"
+
+guide:
+  trigger_phrases:
+    - "可以带我参观一下吗"
+    - "带我参观一下"
+  route:
+    - restaurant
+    - kitchen
+    - living_room
+    - bedroom
+  introductions:
+    restaurant: "这里是餐厅，是用餐和交流的区域。"
+    kitchen: "这里是厨房，是准备和烹饪食物的区域。"
+    living_room: "这里是客厅，是休息和接待来访者的区域。"
+    bedroom: "这里是卧室，是睡眠和休息的区域。"
+
+assistant:
+  trigger_phrases:
+    - "给我推荐一下今天适合做什么菜"
+    - "去看看冰箱里有什么"
+    - "看下还剩什么菜"
+  target_waypoint: kitchen
+  image_topic: /head_camera/image_raw
+  confidence: 0.10
+  sample_count: 3
+  sample_interval: 0.3
+  minimum_report_count: 3
+  maximum_report_count: 3
+  simulation_fallback:
+    enabled: true
+    fill_to_minimum: true
+    labels:
+      - 番茄
+      - 鸡蛋
+      - 青椒
+  food_labels:
+    - 上海青
+    - 土豆
+    - 猪肉
+    - 玉米
+    - 番茄
+    - 苹果
+    - 茄子
+    - 虾
+    - 豆腐
+    - 青椒
+    - 香蕉
+    - 鱼肉
+    - 鸡蛋
+    - 黄瓜
+  recipes:
+    - name: 番茄炒蛋配青椒
+      requires: [番茄, 鸡蛋, 青椒]
+      method: "番茄切块，鸡蛋打散炒熟盛出，青椒切块，先炒番茄出汁，再倒入鸡蛋和青椒翻炒调味。"
+    - name: 番茄炒蛋
+      requires: [番茄, 鸡蛋]
+      method: "番茄切块，鸡蛋打散炒熟盛出，再炒番茄出汁，倒回鸡蛋翻炒调味。"
+    - name: 青椒炒肉
+      requires: [青椒, 猪肉]
+      method: "青椒切丝，猪肉切片腌制，先炒肉片，再放青椒炒熟并调味。"
+    - name: 上海青豆腐汤
+      requires: [上海青, 豆腐]
+      method: "上海青洗净切段，豆腐切块，水开后加入豆腐和上海青煮熟调味。"
+    - name: 黄瓜炒虾仁
+      requires: [黄瓜, 虾]
+      method: "虾仁腌制后炒至变色，加入黄瓜片快速翻炒并调味。"
+    - name: 土豆烧肉
+      requires: [土豆, 猪肉]
+      method: "猪肉煸香后加入土豆块，加水焖熟并调味。"
+    - name: 番茄豆腐
+      requires: [番茄, 豆腐]
+      method: "番茄炒出汤汁，加入豆腐块小火煮入味。"
+    - name: 玉米炒肉末
+      requires: [玉米, 猪肉]
+      method: "玉米粒焯水，猪肉剁末炒香，加入玉米粒翻炒并调味。"
+    - name: 红烧茄子
+      requires: [茄子]
+      method: "茄子切块煎软，加入调味汁烧至入味。"
+    - name: 清蒸鱼肉
+      requires: [鱼肉]
+      method: "鱼肉处理干净后加葱姜蒸熟，淋上蒸鱼豉油。"
+    - name: 清炒虾仁
+      requires: [虾]
+      method: "虾仁腌制后快速滑炒，炒熟后调味。"
+    - name: 水果拼盘
+      requires: [苹果, 香蕉]
+      method: "苹果和香蕉切块，摆盘后即可食用。"
+
+find_object:
+  image_topic: /head_camera/image_raw
+  confidence: 0.15
+  sample_count: 3
+  sample_interval: 0.3
+  trigger_phrases:
+    cell phone:
+      - "帮我找一下手机"
+      - "找一下手机"
+      - "找手机"
+    backpack:
+      - "帮我找一下书包"
+      - "找一下书包"
+      - "找书包"
+  route:
+    - restaurant
+    - kitchen
+    - living_room
+    - bedroom
+    - corridor
+  labels:
+    - cell phone
+    - backpack
+  simulation_fallback:
+    enabled: true
+    room_results:
+      restaurant: []
+      kitchen: []
+      living_room:
+        - backpack
+      bedroom:
+        - cell phone
+      corridor: []
+
+finish:
+  trigger_phrases:
+    - "返回充电桩"
+    - "去充电"
+    - "开始充电"
+    - "任务完成"
+  charge_target: charge
+  start_speech: "准备返回充电桩。"
+  complete_speech: "开始充电，任务完成。"
+
+chinese_names:
+  restaurant: 餐厅
+  kitchen: 厨房
+  living_room: 客厅
+  bedroom: 卧室
+  corridor: 走廊
+  cell phone: 手机
+  backpack: 书包
+  上海青: 上海青
+  土豆: 土豆
+  猪肉: 猪肉
+  玉米: 玉米
+  番茄: 番茄
+  苹果: 苹果
+  茄子: 茄子
+  虾: 虾
+  豆腐: 豆腐
+  青椒: 青椒
+  香蕉: 香蕉
+  鱼肉: 鱼肉
+  鸡蛋: 鸡蛋
+  黄瓜: 黄瓜

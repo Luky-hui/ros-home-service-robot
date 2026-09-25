@@ -1,0 +1,8 @@
+geometry_msgs/Pose2D goal
+string global_frame #map odom
+bool avoid_obstacle
+bool finishStopObstacle #停障碍时是否直接结束
+uint8 is_omni
+---
+bool success
+string message

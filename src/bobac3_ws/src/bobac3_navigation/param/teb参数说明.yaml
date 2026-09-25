@@ -1,0 +1,290 @@
+TebLocalPlannerROS:
+
+  odom_topic: odom
+    
+ # Trajectory
+  # 优化期间是否允许改变轨迹的时域长度，也就是改变 dt_ref
+  # 会根据全局路径和机器人的速度来自动计算和调整Teb Local Planner的时间扩展窗口的大小
+  # 设置为false时，需要手动指定Teb Local Planner的时间扩展窗口的大小
+  # 即dt_ref（参考时间间隔）和dt_hysteresis（滞后时间间隔）
+  teb_autosize: True
+  # 局部路径规划的解析度、通常设置为1/control_rate
+  # TEB通过状态搜索树寻找最优路径，而dt_ref则是最优路径上的两个相邻姿态
+  # （即位置、速度、航向信息，可通过TEB可视化在rivz中看到）的默认距离。
+  # 此距离不固定，规划器自动根据速度大小调整这一距离，速度越大，相邻距离自然越大，较小的值理论上可提供更高精度。
+  # 增大时、teb_pose个数减少，车速可能会加快 
+  dt_ref: 0.3
+  # 允许改变的时域解析度的浮动范围
+  # 当时间扩展窗口的大小需要调整时，滞后时间间隔会在当前时间扩展窗口大小和新计算的大小之间提供一个缓冲区，以确保平滑的过渡
+  dt_hysteresis: 0.1
+  # 在自动调整时间扩展窗口（teb_autosize）的过程中，dt_ref和dt_hysteresis起到了关键的作用
+  # dt_ref确定了时间扩展窗口的初始大小
+  # dt_hysteresis确保在调整过程中有一个平滑的过渡，防止过于剧烈的变化
+
+  # 生成轨迹时所需的最小样本点数
+  # 设置为较小的值时，可能会生成较少的轨迹样本，导致搜索空间较小，可能会错过一些潜在的优质轨迹
+  # 这可能会导致规划结果较为保守，可能不够灵活适应环境的变化
+  # 设置为较大的值时，会生成更多的轨迹样本，扩大了搜索空间，更容易发现更多的轨迹候选项
+  # 然而，这也会增加计算开销和规划时间。
+  # 必须大于2
+  min_samples: 5
+  max_samples: 500
+
+  # 是否覆盖全局路径的方向信息,有些全局规划器不考虑局部子目标的朝向，因此在这里校正
+  # 设置为true时，Teb Local Planner会忽略全局路径中的方向信息，并根据局部路径规划的需要，自动生成适当的方向信息
+  # 设置为false时，Teb Local Planner将保留全局路径中的方向信息，并尊重全局路径的指示
+  global_plan_overwrite_orientation: True
+
+  # 是否允许在初始规划阶段使用向后运动
+  allow_init_with_backwards_motion: True
+
+  # 当机器人距离当前目标位置的距离超过指定阈值时，强制重新初始化路径规划
+  force_reinit_new_goal_dist: 1.0
+
+  force_reinit_new_goal_angular: 0.78
+
+  # 全局路径规划中考虑的最大前瞻距离
+  # 较大的值可能会导致更长的规划计算时间
+  # 较小的值可能会导致机器人过于保守或无法及时响应导航变化
+  # 此距离 
+  # 1.应随车辆最大速度的增大而增大 
+  # 2.不应超过激光雷达等传感器的可靠测量范围 
+  # 3.不应超过局部代价地图的大小，即不能要求TEB对局部代价地图以外的部分进行规划。
+  max_global_plan_lookahead_dist: 1.5
+
+  # 控制全局路径中途点的间隔距离
+  # 中途点是指全局路径中除起始点和目标点之外的路径点
+  # 较小的间隔距离可以提供更精细的导航路径，但可能导致更复杂的规划计算和更频繁的调整
+  # 较大的间隔距离可以减少规划计算和调整频率，但可能导致导航路径的精度降低
+  # 正数才启用。应根据机器人的尺寸大小调整.
+  global_plan_viapoint_sep: 0.5
+
+  # 全局路径中冗余路径点的剪枝距离
+  # 冗余路径点是指全局路径中距离当前机器人位置一定距离内的路径点
+  # 它们在导航过程中可能不再需要考虑，因为机器人已经通过之前的路径点成功导航到了当前位置
+  # 剪枝冗余路径点可以减少路径规划和跟踪的计算负载，并提高导航的效率
+  # 较大的值可能会导致路径中保留较长的冗余部分
+  # 较小的值可能会过早地剪枝路径点，可能导致路径不够光滑或导航不够准确
+  global_plan_prune_distance: 1
+
+  # 路径插补过程中的路径长度计算方式,路径插补是指将机器人的全局路径进行平滑化和连续化
+  # 为true时，路径长度将通过精确计算进行求解
+  # 这意味着插补过程中将考虑路径曲线的真实弧长，从而实现更精确的路径长度计算
+  # 为false时，路径长度将通过近似计算进行求解
+  # 近似计算可能使用简化的几何模型或近似公式来估计路径的长度，从而降低计算复杂度和计算量
+  exact_arc_length: False
+  # 在判断生成的轨迹是否冲突时使用
+  # 此时设置为3，即从轨迹起点开始逐个检查轨迹上的3个点，若3个点均不发生碰撞，则认为本次轨迹有效
+  # 若小于0则检查所有路径点。由于teb优化并非硬约束，这里相当于是轨迹生成之后的一层保障
+  # 这个参数根据机器人的速度和环境复杂程度调整，否则极有可能出现在狭窄环境中走走停停的情况，甚至可以减小到1或0
+  feasibility_check_no_poses: 3
+
+  publish_feedback: False
+    
+ # Robot
+         
+  max_vel_x: 0.5
+  # 最大倒车速度。将此速度设置为0或者负数将导致错误。禁止倒车应在penalty部分将前向行驶的权重设置得极高
+  max_vel_x_backwards: 0.3
+  max_vel_y: 0.5
+  max_vel_theta: 0.5
+  acc_lim_x: 1.0
+  acc_lim_y: 1.0
+  acc_lim_theta: 3
+
+  # 最小转弯半径，对于差动、全向机器人为0
+  min_turning_radius: 0.0 # diff-drive robot (can turn on place!)
+
+  # 机器人轮廓
+  # types: “point”, “circular”, “two_circles”, “line”, “polygon”
+  # “point”模型是最简单的，所需的计算时间最少，但准确度也最低
+  # ”polygon”多边形模型最复杂，完全考虑到机器人的轮廓形状，计算准确度最高
+  # circular类型把机器人建模为一个简单的圆，半径为/footprint_model/radius，计算距离和Point类型相似，
+  # 不同点是每次调用函数时机器人半径会被加入到参数
+  footprint_model:
+    type: "circular"
+    radius: 0.28
+  # 机器人的轮廓是否是动态的，即机器人是否是可变形的
+  is_footprint_dynamic: False
+
+ # GoalTolerance  
+  # 距离允许误差
+  xy_goal_tolerance: 0.1
+  # 角度允许误差
+  yaw_goal_tolerance: 0.05
+  # 自由目标速度
+  # 设为False时，车辆到达终点时的目标速度为0。
+  # 设为True时，车辆可全速冲线
+  free_goal_vel: False
+
+  #是否要在局部路径规划中完整执行全局路径
+  # 设置为true时，teb_local_planner会尽量按照全局路径的每个路径点进行规划，以确保机器人完整地遵循全局路径
+  # 设置为false时，teb_local_planner在局部路径规划中可能会更加自主和灵活。可以提高机器人在复杂环境中的规划效果和鲁棒性
+  complete_global_plan: True
+    
+ # Obstacles
+  # 最小障碍物距离，用于限制机器人与障碍物的最小距离
+  # 若设置了轮廓，则不建议使用此参数
+  # 使用轮廓配置footprint_model配合膨胀距离即可实现较好效果
+  # 增大min_obstacle_dist可以防止机器人离墙太近，但是对于狭窄通道的情况，反而应该设置的很小
+  # 可以增大机器人轮廓，但减小min_obs_dist，提高防撞性，又保证过窄通道
+  min_obstacle_dist: 0.0 # This value must also include our robot radius, since footprint_model is set to "point".
+  # 关联障碍物距离系数
+  # 指定距离内的所有障碍物都被强制包含在内(作为min_obstacle_dist的倍数)
+  # 例如，选择2.0是为了强制考虑2.0* min_obstle_dist半径内的障碍物
+  # [仅当legacy_obstacle_association参数为false时使用]
+  obstacle_association_force_inclusion_factor: 1.5
+  # 无效障碍物距离参数
+  # 在obstacle_association_cutoff_factor* min_obstle_dist的倍数之外所有障碍在优化过程中都会被忽略
+  # 首先处理参数obstle_association_force_inclusion_factor
+  obstacle_association_cutoff_factor: 2.5
+  # 距离小于min_obstacle_dist * obstacle_association_force_inclusion_factor值的障碍物点，被强制加入优化框架中
+  # 距离大于min_obstacle_dist * obstacle_association_cutoff_factor的障碍物点被直接抛弃不再考虑
+  # 然后在剩余的障碍物点中计算机器人左侧最小距离和右侧最小距离
+  # 这三个参数的设置非常重要，需要根据机器人的外形尺寸小心调整，否则极易出现狭窄空间机器人无法通过或优化不收敛的情况
+
+  # 障碍物膨胀距离。这个值必须大于min_obstacle_dist才有效
+  # 此膨胀只是降低通过这些区域的优先级，不应当用此距离迫使车辆远离障碍物
+  # 障碍物周边的缓冲区，零惩罚代价，缓冲区会导致规划器减速
+  inflation_dist: 0.1
+
+  # 这个不为true就不会避障了
+  include_costmap_obstacles: True
+  # 考虑机器人后方障碍物的距离
+  costmap_obstacles_behind_robot_dist: 0.8
+
+  legacy_obstacle_association: false
+  # 对于每一个障碍物（点、线、多边形），距其最近的poses都会被定位出来
+  # 参数obstacle_poses_affected个相邻的最近poses都会被考虑进来
+  # 略微影响障碍物周围轨迹的平滑度
+  # 如果legacy_obstacle_association是false，则不启用
+  obstacle_poses_affected: 15
+
+  dynamic_obstacle_inflation_dist: 0.2
+  include_dynamic_obstacles: True
+
+  # 决定是否使用costmap_converter插件，原始costmap中障碍物全部以点来表示
+  # 计算机器人到障碍物的距离实际需要计算机器人到每一个障碍物点的距离，当环境非常复杂时计算代价会非常大
+  # costmap_converter插件的作用是将障碍物预先表示成线段或多边形的形式
+  # 可以在一定程度上减轻后续计算距离的压力，尤其是处理激光雷达分散的测量数据时。因为将障碍物视为系列孤立点效率极低。
+  # 可取值为
+  # ”costmap_converter::CostmapToPolygonsDBSMCCH”
+  # “costmap_converter::CostmapToLinesDBSRANSAC”
+  # “costmap_converter::CostmapToLinesDBSMCCH”
+  # “costmap_converter::CostmapToPolygonsDBSConcaveHull”
+  # “” # 空字符串表示不启用
+  costmap_converter_plugin: "" #"costmap_converter::CostmapToLinesDBSMCCH"
+  costmap_converter_spin_thread: True
+  costmap_converter_rate: 10
+
+ # Optimization
+  # 图优化optimizer的迭代次数
+  no_inner_iterations: 5
+  # 每次外部循环迭代都会根据所需的时间分辨率dt_ref自动调整轨迹的大小，并调用内部优化器
+  no_outer_iterations: 3
+  # 是否激活轨迹优化阶段
+  optimization_activate: True
+  # 控制轨迹优化过程中的详细输出信息
+  optimization_verbose: False
+  # 一次性改变所有的惩罚项，为惩罚函数增加一个小的安全余量，以实现硬约束近似.
+  # 例如为速度的约束提供一个缓冲的效果，在到达速度限制前会产生一定的惩罚，让其提前减速达到缓冲的效果
+  # 如果选择过高的值，会影响最终的信息矩阵，可能会出现不收敛的情况
+  penalty_epsilon: 0.1
+
+  # 判断是否为1，同时min_obstacle_dist > 0才有效。用于更新g2o的误差函数
+  obstacle_cost_exponent: 0.65
+
+  # 满足最大允许平移速度的优化权重
+  weight_max_vel_x: 2
+  weight_max_vel_theta: 1
+  weight_acc_lim_x: 1
+  weight_acc_lim_theta: 1
+
+  # 用于满足非完整运动学的优化权重
+  # 该参数必须很高，因为运动学方程构成了一个等式约束
+  # 即使值1000也不意味着由于与其他成本相比较小的“原始”成本值而导致的矩阵条件不佳
+  weight_kinematics_nh: 1000
+  # 迫使机器人仅选择前进方向 (正向速度)
+  # 较小的权重，仍然会允许向后行驶
+  # 我们无法限制优化器的搜索空间为正的速度，因为优化器不支持硬约束，只能大幅提高weight_kinematics_forward_drive以避免后退速度
+  # 但是值太大又会减小收敛速度。不管权重多高，无法规划出前进的路径时，还是可能出现停滞或者倒车。
+  weight_kinematics_forward_drive: 500
+  weight_kinematics_turning_radius: 200
+  # 最优时间权重
+  # 越大越能接近max_vel_x，并靠近路径边缘沿切线过弯
+  weight_optimaltime: 4 # must be > 0
+  weight_shortest_path: 0
+
+  # 优化权重以保持与障碍物的最小距离。可以增大至几百，让机器人提前转向，避免卡死
+  weight_obstacle: 50
+  # 膨胀层惩罚的优化权重，应当很小
+  weight_inflation: 0.1
+  # 满足与动态障碍物最小距离的优化权重
+  weight_dynamic_obstacle: 10
+  # 动态障碍物膨胀惩罚的优化权重(应该很小)
+  weight_dynamic_obstacle_inflation: 0.2
+  weight_viapoint: 1
+
+  # 每个外部TEB迭代中，一些特殊权重 (当前为weight_obstacle) 会通过此因子重复缩放 (weight_new = weight_old * factor) 
+  # 迭代增加权重而不是设置较大的先验值会导致底层优化问题的更好数值条件
+  weight_adapt_factor: 2
+
+ # Homotopy Class Planner
+  # 激活并行规划(占用更多的CPU资源)
+  enable_homotopy_class_planning: True
+  
+  # 激活多个线程以计划不同线程中的每个轨迹
+  enable_multithreading: True
+  # 指定要考虑的最大不同轨迹数(限制计算工作量)，影响CPU
+
+  max_number_classes: 4
+  # 新候选轨迹必须具有多少轨迹成本才能选择之前的轨迹 (如果new_cost < old_cost * factor，则进行选择）
+  selection_cost_hysteresis: 1.0
+  # 为初始计划的等价类中的轨迹指定区间(0,1)内的成本降低
+  selection_prefer_initial_plan: 0.9
+  # 仅选择“最佳”候选轨迹的障碍物成本进行额外缩放
+  selection_obst_cost_scale: 100.0
+  # 如果为true，则将时间成本 (时间差平方的总和) 替换为总过渡时间 (时间差之和)
+  selection_alternative_time_cost: False
+  # 指定为创建roadmap graph而生成的样本数，前提是simple_exploration为false
+  roadmap_graph_no_samples: 15
+  # 在起点和目标之间的矩形区域中采样随机关键点/航路点。以米为单位指定该区域的宽度
+  roadmap_graph_area_width: 5
+  roadmap_graph_area_length_scale: 1.0
+  # 标度内部参数 (H-signature) ，用于区分同类
+  # 警告：仅当您在本地成本图中观察到障碍物过多的问题时，才减小此参数
+  # 请勿将其选得太低，否则障碍物无法彼此区分 (0.2 < 值 <= 1)
+  h_signature_prescaler: 0.5
+
+  # 如果实部和复杂部的差都低于指定的阈值，则假定两个H签名相等
+  h_signature_threshold: 0.1
+  # 在障碍物航向和目标航向之间指定标量乘积的值，以便将障碍物)考虑在内进行探索
+  obstacle_heading_threshold: 0.45
+  # 指定允许切换到新的等效类之前需要终止的持续时间 (以秒为单位)
+  switching_blocking_period: 0.0
+  # 如果为true，则将不同拓扑的所有轨迹附加到该组通孔点
+  # 否则，仅将与初始/全局计划共享相同拓扑的轨迹与它们连接 (对test_optim_node无效)
+  viapoints_all_candidates: True
+  # 规划者将放弃那些绕道而行的计划，以获得最佳计划
+  delete_detours_backwards: True
+  max_ratio_detours_duration_best_duration: 3.0
+
+  # 如果为true，在rviz里可看到优化使用的graph
+  visualize_hc_graph: False
+  visualize_with_time_as_z_axis_scale: False
+
+# Recovery
+  # 在自动检测到问题(plan not feasible)的情况下，允许planner临时缩小范围(50%).
+  # TEB将以更近的点作为规划目标，尝试重新规划出可行路径
+  shrink_horizon_backup: True
+  # 如果检测到不可行的轨迹，激活缩小的水平线后备模式，本参数为其最短持续时间
+  shrink_horizon_min_duration: 10
+  # 尝试检测和解决相同等价类中多个解之间的振荡(机器人经常在左/右/向前/向后之间切换)
+  oscillation_recovery: True
+  # (0,1)内的 normalized 线速度的平均值的阈值
+  oscillation_v_eps: 0.1
+  # (0,1)内的 normalized 角速度的平均值
+  oscillation_omega_eps: 0.1
+  # 在这个时间内，是否再次发生FailureDetector检测的振荡
+  oscillation_recovery_min_duration: 10
+  oscillation_filter_duration: 10

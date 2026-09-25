@@ -1,0 +1,15 @@
+<launch>
+  <!-- Map server -->
+  <arg name="map_file" default="home"/>
+	<arg name="map_directory" default="$(env MAP_DIRECTORY)"/>
+  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_directory)/$(arg map_file).yaml"/>
+
+  <!-- RViz with map editing configuration -->
+  <!-- <arg name="rvizconfig" default="$(find ros_map_edit)/config/map_edit.rviz"/>
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" output="screen"/> -->
+
+  <!-- Static transform for map frame -->
+  <node name="map_tf_broadcaster" pkg="tf2_ros" type="static_transform_publisher" 
+        args="0 0 0 0 0 0 map odom"/>
+
+</launch> 

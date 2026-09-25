@@ -1,0 +1,45 @@
+<launch>
+  <arg name="open_rviz" default="false"/>
+  <arg name="use_sim_time" default="true"/>
+  <arg name="laser_type" default="CSPC"/>
+  <arg name="spawn_obstacle" default="true"/>
+  <arg name="obstacle_spawn_delay" default="8"/>
+  <arg name="world_name" value="$(find bobac3_description)/world/reinovo_2026_bobac3.world"/>
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(arg world_name)" />
+    <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+  </include>
+  <param name = "robot_description" 
+    command="$(find xacro)/xacro $(find bobac3_description)/xacro/bobac3_serverbot.xacro sim:=1 laser_type:=$(arg laser_type)"/>
+  <rosparam command="load" file="$(find bobac3_description)/config/control.yaml"/>
+  <node
+    name="spawn_model"
+    pkg="bobac3_description"
+    type="spawn_model_tolerant.sh"
+    args="-param robot_description -urdf -model bobac3_serverbot -z 0.01"
+    output="screen" />
+  <node name="spawn_cylinder_obstacle"
+        if="$(arg spawn_obstacle)"
+        pkg="bobac3_description"
+        type="spawn_model_tolerant.sh"
+        launch-prefix="bash -c 'sleep $(arg obstacle_spawn_delay); exec &quot;$@&quot;' --"
+        args="-sdf -file $(find bobac3_description)/xacro/model.sdf -model cylinder_obstacle -x 0.0 -y -0.6 -z 0.5"
+        output="screen"/>
+  <node
+    name="robot_state_publisher"
+    pkg="robot_state_publisher"
+    type="robot_state_publisher" />
+  <!-- <node
+		name="controller_spawner"
+		pkg="controller_manager"
+		type="spawner"
+		respawn="false"
+		output="screen"
+		args="joint_state_controller left_joint_velocity_controller front_joint_velocity_controller right_joint_velocity_controller"
+		ns="/"
+	/> -->
+  <group if="$(arg open_rviz)"> 
+    <node pkg="rviz" type="rviz" name="rviz"
+          args="-d $(find bobac3_description)/rviz/urdf.rviz"/>
+  </group>
+</launch>

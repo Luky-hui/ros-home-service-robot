@@ -1,0 +1,50 @@
+material reinovo/ScienceBlue
+{
+  technique
+  {
+    pass
+    {
+      ambient 0.0 0.4 0.8 1
+      diffuse 0.0 0.4 0.8 1
+      specular 0.1 0.1 0.1 1
+    }
+  }
+}
+material reinovo/ar_track_1
+{
+  technique
+  {
+    pass
+    {
+      ambient 1.0 1.0 1.0 1.0
+      diffuse 1.0 1.0 1.0 1.0
+      specular 1. 1. 1. 1.0 1
+      emissive 0.2 0.2 0.2 1.0
+
+      texture_unit
+      {
+        texture MarkerData_1.png
+        filtering trilinear
+      }
+    }
+  }
+}
+material reinovo/ar_track_0
+{
+  technique
+  {
+    pass
+    {
+      ambient 1.0 1.0 1.0 1.0
+      diffuse 1.0 1.0 1.0 1.0
+      specular 1. 1. 1. 1.0 1
+      emissive 0.2 0.2 0.2 1.0
+
+      texture_unit
+      {
+        texture MarkerData_0.png
+        filtering trilinear
+      }
+    }
+  }
+}

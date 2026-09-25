@@ -1,0 +1,27 @@
+#对应手臂相机uuid: 1e45 6487 date 20240808
+image_width: 640
+image_height: 480
+camera_name: hand_camera
+camera_matrix:
+  rows: 3
+  cols: 3
+  data: [548.78814,   0.     , 297.9082 ,
+           0.     , 543.26885, 305.41187,
+           0.     ,   0.     ,   1.     ]
+distortion_model: plumb_bob
+distortion_coefficients:
+  rows: 1
+  cols: 5
+  data: [0.020128, 0.113289, 0.006777, 0.013031, 0.000000]
+rectification_matrix:
+  rows: 3
+  cols: 3
+  data: [1., 0., 0.,
+         0., 1., 0.,
+         0., 0., 1.]
+projection_matrix:
+  rows: 3
+  cols: 4
+  data: [574.04742,   0.     , 306.92001,   0.     ,
+           0.     , 573.15924, 305.19655,   0.     ,
+           0.     ,   0.     ,   1.     ,   0.     ]

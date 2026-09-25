@@ -1,0 +1,6 @@
+string text
+bool is_play
+---
+bool success
+string filePath
+string message

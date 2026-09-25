@@ -1,0 +1,48 @@
+<launch>
+  <arg name="open_nav_rviz" default="true"/>
+  <arg name="gazebo_gui" default="true"/>
+  <arg name="spawn_obstacle" default="true"/>
+  <arg name="randomize_service_textures" default="false"/>
+  <arg name="service_config_file" default="$(find service_group_mission)/config/service_group_waypoints.yaml"/>
+  <arg name="event_mode" default="random"/>
+  <arg name="event_random_seed" default=""/>
+  <arg name="use_official_service_scene" default="false"/>
+  <arg name="map_file_name" default="reicom"/>
+  <arg name="map_directory" default="$(find bobac3_navigation)/maps"/>
+  <arg name="rviz_config" default="$(find bobac3_navigation)/rviz/national_2026_default.rviz"/>
+	<arg name="location_method" default="amcl_sim" 
+				doc="location type [amcl_sim, cartographer_sim]"/>
+  <param if="$(arg randomize_service_textures)"
+         name="/service_group_mission/precomputed_events_json"
+         command="$(find service_group_mission)/scripts/randomize_service_textures.py --config-file $(arg service_config_file) --event-mode $(arg event_mode)"/>
+	<!--bobac3 model description-->
+  <include file="$(find bobac3_description)/launch/gazebo.launch">
+    <arg name="open_rviz" value="false"/>
+    <arg name="spawn_obstacle" value="$(arg spawn_obstacle)"/>
+  </include>
+  <node if="$(arg use_official_service_scene)"
+        name="official_service_scene"
+        pkg="bobac3_description"
+        type="run_official_service_scene.sh"
+        output="screen"/>
+	<!--map_server-->
+	<include file="$(find map_manager)/launch/map_load.launch">
+		<arg name="map_file" value="$(arg map_file_name)"/>
+		<arg name="map_directory" value="$(arg map_directory)"/>
+	</include>
+	<!--move_base-->
+	<include file="$(find bobac3_navigation)/launch/move_base_sim.launch"/>
+	<!--location-->
+	<include file="$(find bobac3_navigation)/launch/$(arg location_method).launch">
+	 <arg name="map_file" value="$(arg map_file_name)"/>
+	</include>
+	<node name="virtual_wall_map_publisher" pkg="ros_map_edit" type="virtual_wall_map_publisher.py">
+		<param name="map_file" value="$(arg map_directory)/$(arg map_file_name).yaml"/>
+	</node>
+	
+	<!--  **************** Visualisation ****************  -->
+  <group if="$(arg open_nav_rviz)"> 
+    <node pkg="rviz" type="rviz" name="rviz"
+          args="-d $(arg rviz_config)"/>
+  </group>
+</launch>

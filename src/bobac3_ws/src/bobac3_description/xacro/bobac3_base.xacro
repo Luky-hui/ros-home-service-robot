@@ -1,0 +1,758 @@
+<?xml version="1.0"?>
+<robot name="bobac3_base" xmlns:xacro="http://wiki.ros.org/xacro">
+  <!-- <xacro:include filename="$(find bobac3_description)/xacro/omni_wheel.xacro" /> -->
+  <xacro:include filename="$(find bobac3_description)/xacro/normal_wheel.xacro" />
+  <xacro:include filename="$(find bobac3_description)/xacro/gazebo_plugin.xacro" />
+  <!-- 属性封装 -->
+  <xacro:property name="lightgrey" value="0.7 0.7 0.7 1.0" />
+  <xacro:property name="black" value="1 1 1 1" />
+  <!-- 宏 -->
+  <xacro:macro name="bobac3_body" params="sim laser_type">
+    <link name="base_footprint">
+      <visual>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+        <geometry>
+          <cylinder radius="0.12" length="0.025" />
+        </geometry>
+        <material name="LightGrey">
+          <color rgba="1.0 1.0 1.0 1.0" />
+        </material>
+      </visual>
+      <collision>
+        <geometry>
+          <cylinder radius="0.12" length="0.025" />
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="5.0" />
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+        <inertia ixx="3.0" ixy="0.0" ixz="0.0" iyy="3.0" iyz="0.0" izz="3.0" />
+      </inertial>
+    </link>
+    <joint name="base_footprint_joint" type="fixed">
+      <!-- xyz="0.0 0 0.03" -->
+      <origin
+        xyz="0.0 0 0.0125"
+        rpy="0 0 0" />
+      <parent link="base_footprint" />
+      <child link="base_link" />
+    </joint>
+    <link name="charge_port_link">
+      <visual>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+        <geometry>
+          <box size="0.03 0.02 0.005" />
+        </geometry>
+        <material name="charge_left">
+          <color rgba="1.0 0.5 0.0 1.0" />
+        </material>
+      </visual>
+      <collision>
+        <geometry>
+           <box size="0.03 0.02 0.005" />
+        </geometry>
+      </collision>
+    </link>
+    <joint name="base_charge_joint" type="fixed">
+      <!-- xyz="0.0 0 0.03" -->
+      <origin
+        xyz="-0.16 0.0 -0.0075"
+        rpy="0 0 0" />
+      <parent link="base_link" />
+      <child link="charge_port_link" />
+    </joint>
+    <link
+      name="base_link">
+      <inertial>
+        <origin
+          xyz="0 0.0 0.11536"
+          rpy="0 0 0" />
+        <mass
+          value="5.0" />
+        <inertia
+          ixx="0.0243205267180426"
+          ixy="-7.49514010276593E-06"
+          ixz="-4.36125309373107E-06"
+          iyy="0.023437498694492"
+          iyz="2.20747939367641E-08"
+          izz="0.0440362692416399" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://bobac3_description/meshes/base_link.STL" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="1 1 1 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://bobac3_description/meshes/base_link.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <link
+      name="smoke_link">
+      <inertial>
+        <origin
+          xyz="-0.011386749872191 -0.0 -0.003"
+          rpy="0 0 0" />
+        <mass
+          value="0.001" />
+        <inertia
+          ixx="2.9438312675872E-06"
+          ixy="-1.99747613561816E-08"
+          ixz="-3.43643897304303E-08"
+          iyy="1.81307313583384E-06"
+          iyz="-1.29724926075991E-08"
+          izz="1.92106087314728E-06" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://bobac3_description/meshes/smoke_link.STL" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="0.3 0.3 0.3 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://bobac3_description/meshes/smoke_link.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <joint
+      name="smoke_joint"
+      type="fixed">
+      <origin
+        xyz="0.1721 0.07883 0.149"
+        rpy="0 0 0.43633" />
+      <parent
+        link="base_link" />
+      <child
+        link="smoke_link" />
+      <axis
+        xyz="0 0 0" />
+    </joint>
+    <link
+      name="humtmper_link">
+      <inertial>
+        <origin
+          xyz="-0.0113867498460193 -0.000132691958211889 -0.00293544142318294"
+          rpy="0 0 0" />
+        <mass
+          value="0.001" />
+        <inertia
+          ixx="2.94383126602934E-06"
+          ixy="-1.99747605541921E-08"
+          ixz="-3.43643867168871E-08"
+          iyy="1.81307313475555E-06"
+          iyz="-1.29724939326266E-08"
+          izz="1.92106087406327E-06" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://bobac3_description/meshes/humtmper_link.STL" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="0.3 0.3 0.3 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://bobac3_description/meshes/humtmper_link.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <joint
+      name="humtmper_joint"
+      type="fixed">
+      <origin
+        xyz="0.170839 -0.08155 0.149"
+        rpy="0 0 -0.436332312998562" />
+      <parent
+        link="base_link" />
+      <child
+        link="humtmper_link" />
+      <axis
+        xyz="0 0 0" />
+    </joint>
+    <link
+      name="right_ultrasound_link">
+      <inertial>
+        <origin
+          xyz="-0.0113867 -0.0001297 -0.002935"
+          rpy="0 0 0" />
+        <mass
+          value="0.001" />
+        <inertia
+          ixx="2.94383127868008E-06"
+          ixy="-1.99397287629136E-08"
+          ixz="-3.43847262176555E-08"
+          iyy="1.8130996970354E-06"
+          iyz="-1.30825201409876E-08"
+          izz="1.92103432071694E-06" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://bobac3_description/meshes/right_ultrasound_link.STL" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="0.3 0.3 0.3 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://bobac3_description/meshes/right_ultrasound_link.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <joint
+      name="right_ultrasond_joint"
+      type="fixed">
+      <origin
+        xyz="-0.17932 -0.063487 0.149"
+        rpy="0 0 -2.79252" />
+      <parent
+        link="base_link" />
+      <child
+        link="right_ultrasound_link" />
+      <axis
+        xyz="0 0 0" />
+    </joint>
+    <link
+      name="left_ultrasound_link">
+      <inertial>
+        <origin
+          xyz="-0.0113867499069036 -0.000135683454433017 -0.0029353048952144"
+          rpy="0 0 0" />
+        <mass
+          value="0.001" />
+        <inertia
+          ixx="2.94383129434898E-06"
+          ixy="-2.00097722739134E-08"
+          ixz="-3.43440200020954E-08"
+          iyy="1.81304682951244E-06"
+          iyz="-1.28624213303506E-08"
+          izz="1.92108720225237E-06" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://bobac3_description/meshes/left_ultrasound_link.STL" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="0.3 0.3 0.3 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://bobac3_description/meshes/left_ultrasound_link.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <joint
+      name="left_ultrasound_joint"
+      type="fixed">
+      <origin
+        xyz="-0.178298 0.066293 0.1490278"
+        rpy="0 0 2.79252" />
+      <parent
+        link="base_link" />
+      <child
+        link="left_ultrasound_link" />
+      <axis
+        xyz="0 0 0" />
+    </joint>
+    <link
+      name="bottom_camera_link">
+      <inertial>
+        <origin
+          xyz="-0.0127637 -0.00025 -0.000585"
+          rpy="0 0 0" />
+        <mass
+          value="0.001" />
+        <inertia
+          ixx="6.25315354724118E-07"
+          ixy="-7.68659979311767E-09"
+          ixz="-1.79892061893002E-08"
+          iyy="4.60069300276825E-07"
+          iyz="-1.68206873106996E-08"
+          izz="4.39036850509661E-07" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://bobac3_description/meshes/bottom_camera_link.STL" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="0.3 0.3 0.3 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://bobac3_description/meshes/bottom_camera_link.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <joint
+      name="bottom_camera_joint"
+      type="fixed">
+      <origin
+        xyz="-0.195998 0 0.0345"
+        rpy="0 0 3.14159" />
+      <parent
+        link="base_link" />
+      <child
+        link="bottom_camera_link" />
+      <axis
+        xyz="0 0 0" />
+    </joint>
+    <link name="bottom_camera_optical_link" />
+    <joint name="bottom_camera_optical_joint" type="fixed">
+      <parent link="bottom_camera_link" />
+      <child link="bottom_camera_optical_link" />
+      <origin xyz="0 0 0" rpy="-1.57079 0 -1.57079" />
+    </joint>
+    <xacro:if value="${laser_type == 'CSPC'}">
+      <link
+        name="cover_link">
+        <inertial>
+          <origin
+            xyz="-0.0354525819847529 0.00107783094708411 -0.0198121193715805"
+            rpy="0 0 0" />
+          <mass
+            value="0.944663417652184" />
+          <inertia
+            ixx="0.00528140559371182"
+            ixy="3.26493500090459E-07"
+            ixz="2.25237877582117E-07"
+            iyy="0.00753457964508637"
+            iyz="3.39315515029986E-07"
+            izz="0.0127694070178216" />
+        </inertial>
+        <visual>
+          <origin
+            xyz="0 0 0"
+            rpy="0 0 0" />
+          <geometry>
+            <mesh
+              filename="package://bobac3_description/meshes/cover_link_cspc.STL" />
+          </geometry>
+          <material
+            name="">
+            <color
+              rgba="1 1 1 1" />
+          </material>
+        </visual>
+        <collision>
+          <origin
+            xyz="0 0 0"
+            rpy="0 0 0" />
+          <geometry>
+            <mesh
+              filename="package://bobac3_description/meshes/cover_link_cspc.STL" />
+          </geometry>
+        </collision>
+      </link>
+    </xacro:if>
+    <xacro:unless value="${laser_type == 'CSPC'}">
+      <link
+        name="cover_link">
+        <inertial>
+          <origin
+            xyz="-0.046031 0.00010977 -0.012195"
+            rpy="0 0 0" />
+          <mass
+            value="0.02" />
+          <inertia
+            ixx="0.00774898970484328"
+            ixy="-3.1152804546131E-05"
+            ixz="0.00121855966116614"
+            iyy="0.0118594846218277"
+            iyz="1.4019804830066E-05"
+            izz="0.01764520183544" />
+        </inertial>
+        <visual>
+          <origin
+            xyz="0 0 0"
+            rpy="0 0 0" />
+          <geometry>
+            <mesh
+              filename="package://bobac3_description/meshes/cover_link.STL" />
+          </geometry>
+          <material
+            name="">
+            <color
+              rgba="0.3 0.3 0.3 1" />
+          </material>
+        </visual>
+        <collision>
+          <origin
+            xyz="0 0 0"
+            rpy="0 0 0" />
+          <geometry>
+            <mesh
+              filename="package://bobac3_description/meshes/cover_link.STL" />
+          </geometry>
+        </collision>
+      </link>
+    </xacro:unless>
+    <joint
+      name="cover_joint"
+      type="fixed">
+      <xacro:if value="${laser_type == 'CSPC'}">
+        <origin
+          xyz="0.042015 0 0.2945"
+          rpy="0 0 0" />
+      </xacro:if>
+      <xacro:unless value="${laser_type == 'CSPC'}">
+        <origin
+          xyz="0.034465 0 0.2945"
+          rpy="0 0 0" />
+      </xacro:unless>
+      <parent
+        link="base_link" />
+      <child
+        link="cover_link" />
+      <axis
+        xyz="0 0 0" />
+    </joint>
+    <link name="base_depth_link">
+      <inertial>
+        <origin
+          xyz="-0.00447459744099096 -0.000372169875789763 -0.000493298822119459"
+          rpy="0 0 0" />
+        <mass
+          value="0.01" />
+        <inertia
+          ixx="1.88796703121119E-05"
+          ixy="3.47544086819519E-08"
+          ixz="-2.1144625069163E-09"
+          iyy="5.06069616756047E-06"
+          iyz="-2.3443244198326E-07"
+          izz="1.64366862949114E-05" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://bobac3_description/meshes/base_berxel_camera_link.STL" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="1 1 1 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://bobac3_description/meshes/base_berxel_camera_link.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <joint name="base_berxel_camera_joint" type="fixed">
+      <origin
+        xyz="0.176804013961284 0 0.149"
+        rpy="0 0 0" />
+      <parent
+        link="base_link" />
+      <child
+        link="base_depth_link" />
+      <axis
+        xyz="0 0 0" />
+    </joint>
+    <link name="bobac3_base/Cam_base_link" />
+    <joint name="bobac3_depth_dummy_joint" type="fixed">
+      <parent link="base_depth_link" />
+      <child link="bobac3_base/Cam_base_link" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </joint>
+    <xacro:if value="${laser_type == 'CSPC'}">
+      <link
+        name="front_lidar_link">
+        <inertial>
+          <origin
+            xyz="9.79620733382314E-06 3.84424463006512E-05 0.0154349889563586"
+            rpy="0 0 0" />
+          <mass
+            value="0.0149704923132453" />
+          <inertia
+            ixx="2.47304432946628E-06"
+            ixy="-1.99227965010988E-08"
+            ixz="-1.34962913459216E-09"
+            iyy="2.41977759114989E-06"
+            iyz="-4.87056711198406E-09"
+            izz="4.36283158743968E-06" />
+        </inertial>
+        <visual>
+          <origin
+            xyz="0 0 0"
+            rpy="0 0 0" />
+          <geometry>
+            <mesh
+              filename="package://bobac3_description/meshes/front_lidar_link_cspc.STL" />
+          </geometry>
+          <material
+            name="">
+            <color
+              rgba="0 0 0.7 1" />
+          </material>
+        </visual>
+      </link>
+    </xacro:if>
+    <xacro:unless value="${laser_type == 'CSPC'}">
+      <link name="front_lidar_link">
+        <inertial>
+          <origin
+            xyz="0.00651720558030218 0.000224562408974172 -0.00112325450691295"
+            rpy="0 0 0" />
+          <mass
+            value="0.0887019460026471" />
+          <inertia
+            ixx="2.80379133598153E-05"
+            ixy="2.93497586302144E-07"
+            ixz="7.72249383101937E-06"
+            iyy="5.04302779195181E-05"
+            iyz="-1.22728007694022E-07"
+            izz="5.59356812720871E-05" />
+        </inertial>
+        <visual>
+          <origin
+            xyz="0 0 0"
+            rpy="0 0 0" />
+          <geometry>
+            <mesh
+              filename="package://bobac3_description/meshes/front_lidar_link.STL" />
+          </geometry>
+          <material
+            name="">
+            <color
+              rgba="0 0 0.7 1" />
+          </material>
+        </visual>
+        <!-- <collision>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://bobac3_description/meshes/front_lidar_link.STL" />
+        </geometry>
+      </collision> -->
+      </link>
+    </xacro:unless>
+    <joint name="base_front_lidar_joint" type="fixed">
+      <xacro:if value="${laser_type == 'CSPC'}">
+        <origin
+          xyz="0.13952 5.5671E-05 0.20816"
+          rpy="0 0 0" />
+      </xacro:if>
+      <xacro:unless value="${laser_type == 'CSPC'}">
+        <origin
+          xyz="0.140504013961284 0 0.217"
+          rpy="3.14159265358979 0 1.5707963267949" />
+      </xacro:unless>
+      <parent
+        link="base_link" />
+      <child
+        link="front_lidar_link" />
+      <axis
+        xyz="0 0 0" />
+    </joint>
+    <xacro:if value="${laser_type == 'CSPC'}">
+      <link
+        name="rear_lidar_link">
+        <inertial>
+          <origin
+            xyz="9.77370904767239E-06 9.40515125694615E-05 0.0154371252989986"
+            rpy="0 0 0" />
+          <mass
+            value="0.014970492367833" />
+          <inertia
+            ixx="2.47304419700334E-06"
+            ixy="-1.99229697216871E-08"
+            ixz="-1.34960286394679E-09"
+            iyy="2.41977744844693E-06"
+            iyz="-4.87056453682969E-09"
+            izz="4.36283125537936E-06" />
+        </inertial>
+        <visual>
+          <origin
+            xyz="0 0 0"
+            rpy="0 0 0" />
+          <geometry>
+            <mesh
+              filename="package://bobac3_description/meshes/rear_lidar_link_cspc.STL" />
+          </geometry>
+          <material
+            name="">
+            <color
+              rgba="0 0 0.7 1" />
+          </material>
+        </visual>
+      </link>
+    </xacro:if>
+    <xacro:unless value="${laser_type == 'CSPC'}">
+      <link name="rear_lidar_link">
+        <inertial>
+          <origin
+            xyz="0.0065172055803022 0.000224562408974144 -0.00112325450691295"
+            rpy="0 0 0" />
+          <mass
+            value="0.088701946002647" />
+          <inertia
+            ixx="2.80379133598153E-05"
+            ixy="2.93497586302134E-07"
+            ixz="7.72249383101936E-06"
+            iyy="5.04302779195181E-05"
+            iyz="-1.22728007694019E-07"
+            izz="5.59356812720871E-05" />
+        </inertial>
+        <visual>
+          <origin
+            xyz="0 0 0"
+            rpy="0 0 0" />
+          <geometry>
+            <mesh
+              filename="package://bobac3_description/meshes/rear_lidar_link.STL" />
+          </geometry>
+          <material
+            name="">
+            <color
+              rgba="0 0 0.7 1" />
+          </material>
+        </visual>
+        <!-- <collision>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://bobac3_description/meshes/rear_lidar_link.STL" />
+        </geometry>
+      </collision> -->
+      </link>
+    </xacro:unless>
+    <joint
+      name="base_rear_lidar_joint"
+      type="fixed">
+      <xacro:if value="${laser_type == 'CSPC'}">
+        <origin
+          xyz="-0.14048 0 0.20816"
+          rpy="0 0 0" />
+      </xacro:if>
+      <xacro:unless value="${laser_type == 'CSPC'}">
+        <origin
+          xyz="-0.139495986038716 0 0.217"
+          rpy="3.14159265358979 0 1.5707963267949" />
+      </xacro:unless>
+      <parent
+        link="base_link" />
+      <child
+        link="rear_lidar_link" />
+      <axis
+        xyz="0 0 0" />
+    </joint>
+    <link name="fuse_lidar_link" />
+    <joint name="base_fuse_lidar_joint" type="fixed">
+      <!-- <origin
+      xyz="-0.0962194 -0.0830906 -0.167686"
+      rpy="0.0 0 -0.802" /> -->
+      <origin
+        xyz="0.00101 0 0.2"
+        rpy="3.14159265358979 0 1.5707963267949" />
+      <parent link="base_link" />
+      <child link="fuse_lidar_link" />
+    </joint>
+    <!-- <xacro:omni_wheel prefix="left" parent="base_link"
+      xyz="-0.079 -0.136 0.020" rpy="0.000 1.57079 -2.094"
+      sim="${sim}" />
+    <xacro:omni_wheel prefix="right" parent="base_link"
+      xyz="-0.079 0.136 0.02" rpy="0 1.57079 2.094"
+      sim="${sim}" />
+    <xacro:omni_wheel prefix="front" parent="base_link"
+      xyz="0.157 -0.000 0.02" rpy="0 1.57079 0"
+      sim="${sim}" /> -->
+
+    <xacro:normal_wheel prefix="left" parent="base_link"
+      xyz="-0.079 -0.136 0.020" rpy="0.000 1.57079 -2.094" />
+    <xacro:normal_wheel prefix="right" parent="base_link"
+      xyz="-0.079 0.136 0.02" rpy="0 1.57079 2.094" />
+    <xacro:normal_wheel prefix="front" parent="base_link"
+      xyz="0.157 -0.000 0.02" rpy="0 1.57079 0" />
+    <xacro:if value="${sim}">
+      <!-- <gazebo>
+        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+          <robotNamespace>/</robotNamespace>
+          <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+        </plugin>
+      </gazebo> -->
+      <xacro:bobac3_gazebo_plugin />
+    </xacro:if>
+  </xacro:macro>
+</robot>

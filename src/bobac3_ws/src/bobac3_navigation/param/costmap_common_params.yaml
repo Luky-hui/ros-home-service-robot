@@ -1,0 +1,91 @@
+max_obstacle_height: 0.80  # assume something like an arm is mounted on top of the robot
+
+# Obstacle Cost Shaping (http://wiki.ros.org/costmap_2d/hydro/inflation)
+robot_radius: 0.25  # distance a circular robot should be clear of the obstacle 
+# footprint: [[x0, y0], [x1, y1], ... [xn, yn]]  # if the robot is not circular
+
+
+map_type: costmap
+
+obstacle_layer:
+#Global Filtering Parameters
+  max_obstacle_height: 1.0
+  obstacle_range: 3.0
+  raytrace_range: 6.0
+#ObstacleCostmapPlugin 
+  track_unknown_space:  false    #true needed for disabling global path planning through unknown space
+  footprint_clearing_enabled: true
+#VoxelCostmapPlugin 
+  origin_z: 0 #(double, default: 0.0)
+  z_resolution: 0.1 #(double, default: 0.2)
+  z_voxels: 10 #(int, default: 10)
+  unknown_threshold: 0 #(int, default: ~<name>/z_voxels)
+  mark_threshold: 0 #(int, default: 0)
+  publish_voxel_map: false #(bool, default: false)
+  combination_method: 1
+  enabled: true  
+
+#Sensor management parameters  
+  observation_sources: scan #depthscan
+  # for debugging only, let's you see the entire voxel grid
+  scan:
+    data_type: LaserScan
+    topic: fuse_scan
+    observation_persistence: 0
+    expected_update_rate: 0 #(double, default: 0.0)
+    marking: true
+    clearing: true
+    min_obstacle_height: 0.05
+    max_obstacle_height: 0.5
+    obstacle_range: 3.0
+    raytrace_range : 3.0
+    inf_is_valid: false
+    
+  depthscan:
+    data_type: LaserScan
+    topic: depth_scan
+    #sensor_frame: berxel_camera/Cam_base_link
+    observation_persistence: 0
+    expected_update_rate: 0 #(double, default: 0.0)
+    marking: true
+    clearing: true
+    min_obstacle_height: 0.05
+    max_obstacle_height: 0.8
+    obstacle_range: 2.0
+    raytrace_range : 3.0
+    inf_is_valid: false
+
+#cost_scaling_factor and inflation_radius were now moved to the inflation_layer ns
+inflation_layer:
+  enabled: true
+  cost_scaling_factor:  10.0  # exponential rate at which the obstacle cost drops off (default: 10)
+  inflation_radius:     0.1  # max. distance from an obstacle at which costs are incurred for planning paths.
+
+static_layer:
+  enabled: true
+
+virtual_wall_layer:
+  # The value for which a cost should be considered unknown when reading in a map from the map server. If the costmap is not tracking unknown space, costs of this value will be considered occupied. A value of zero also results in this parameter being unused. (int, default: -1)
+  unknown_cost_value: -1
+
+  # The threshold value at which to consider a cost lethal when reading in a map from the map server.(int, default: 100)
+  lethal_cost_threshold: 100
+
+  # The topic that the costmap subscribes to for the static map. This parameter is useful when you have multiple costmap instances within a single node that you want to use different static maps. (string, default: "map")
+  map_topic: /virtual_wall_map
+
+  # Only subscribe to the first message on the map topic, ignoring all subsequent messages (bool, default: false)
+  first_map_only: false
+
+  # In addition to map_topic, also subscribe to map_topic + "_updates" (bool, default: false)
+  subscribe_to_updates: false
+
+  # If true, unknown values in the map messages are translated directly to the layer. Otherwise, unknown values in the map message are translated as FREE_SPACE in the layer.  (bool, default: true)
+  track_unknown_space: false
+
+  # Only matters if the static layer is not the bottom layer. If true, only the maximum value will be written to the master costmap. (bool, default: false)
+  use_maximum: true
+
+  # If true, translates all map message values to NO_INFORMATION/FREE_SPACE/LETHAL_OBSTACLE (three values). If false, a full spectrum of intermediate values is possible. (bool, default: true)
+  trinary_costmap: true
+

@@ -1,0 +1,29 @@
+<launch>
+  <arg name="mission_type" default="auto"/>
+  <arg name="face_mode" default="any"/>
+  <arg name="voice_mode" default="topic"/>
+  <arg name="target_object" default=""/>
+  <arg name="require_fresh_commands" default="false"/>
+  <arg name="speak_unknown_fallback" default="true"/>
+  <arg name="semantic_reply_cooldown" default="6.0"/>
+  <arg name="config_file" default="$(find home_service_mission)/config/home_waypoints.yaml"/>
+  <arg name="vision_service" default="/raicom_vision/detect"/>
+  <arg name="find_vision_service" default="/raicom_vision/detect"/>
+
+  <node pkg="home_service_mission"
+        type="home_service_mission_node.py"
+        name="home_service_mission"
+        output="screen"
+        required="true">
+    <param name="mission_type" value="$(arg mission_type)"/>
+    <param name="face_mode" value="$(arg face_mode)"/>
+    <param name="voice_mode" value="$(arg voice_mode)"/>
+    <param name="target_object" value="$(arg target_object)"/>
+    <param name="require_fresh_commands" value="$(arg require_fresh_commands)"/>
+    <param name="speak_unknown_fallback" value="$(arg speak_unknown_fallback)"/>
+    <param name="semantic_reply_cooldown" value="$(arg semantic_reply_cooldown)"/>
+    <param name="config_file" value="$(arg config_file)"/>
+    <param name="vision_service" value="$(arg vision_service)"/>
+    <param name="find_vision_service" value="$(arg find_vision_service)"/>
+  </node>
+</launch>

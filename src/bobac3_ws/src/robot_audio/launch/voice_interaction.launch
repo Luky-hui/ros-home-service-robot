@@ -1,0 +1,9 @@
+<launch>
+    <include file="$(find robot_audio)/launch/voice_collect.launch"/>
+    <include file="$(find robot_audio)/launch/voice_aiui.launch"/>
+    <include file="$(find robot_audio)/launch/voice_awake.launch"/>
+    <include file="$(find robot_audio)/launch/voice_nav.launch"/>
+    <include file="$(find robot_audio)/launch/voice_control.launch"/>
+
+    <node name="voice_interacion" pkg="robot_audio" type="voice_interaction_node" output="screen"/>
+</launch>

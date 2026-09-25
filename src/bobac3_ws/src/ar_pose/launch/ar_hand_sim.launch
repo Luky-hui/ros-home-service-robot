@@ -1,0 +1,17 @@
+<launch>
+
+  <!--ar码的边长，单位cm-->
+	<arg name="marker_size" default="3" />
+	<!--摄像头名-->
+  <group ns="hand_camera">
+	  <!--打开individualMarkersNoKinect节点并映射为ar_track_alvar节点-->
+	  <node name="ar_track_alvar" pkg="ar_track_alvar" type="individualMarkersNoKinect">
+		  <param name="marker_size"           type="double" value="$(arg marker_size)" />
+		  <param name="max_new_marker_error"  type="double" value="0.08" />
+		  <param name="max_track_error"       type="double" value="0.2" />
+		  <param name="output_frame"          type="string" value="hand_camera_link" />
+		  <remap from="camera_image"  to="image_raw" />
+		  <remap from="camera_info"   to="camera_info" />
+	  </node>
+  </group>
+</launch>

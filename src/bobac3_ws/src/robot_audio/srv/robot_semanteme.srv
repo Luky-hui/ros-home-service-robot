@@ -1,0 +1,9 @@
+int32 mode
+string textorpath
+---
+string tech
+string iat
+string anwser
+string intent
+string[] slots_name
+string[] slots_value

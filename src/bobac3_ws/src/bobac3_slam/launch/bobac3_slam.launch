@@ -1,0 +1,25 @@
+<launch>
+  <!-- Arguments -->
+  <arg name="slam_methods" default="gmapping" doc="slam type [gmapping, cartographer]"/>
+
+  <arg name="open_slam_rviz" default="true"/>
+
+  <include file="$(find bobac3_description)/launch/display.launch">
+    <arg name="open_rviz" value="false"/>
+  </include>
+
+  <!-- bobac3 base & kinematics-->  
+  <include file="$(find rei_robot_base)/launch/base.launch" /> 
+  <include file="$(find robot_joy)/launch/robot_joy.launch" /> 
+  <!-- <include file="$(find rei_ydlidar_nodelet)/launch/lidar.launch" />  -->
+  <include file="$(find cspc_lidar)/launch/bobac3_lidar.launch" /> 
+
+
+  <include file="$(find bobac3_slam)/launch/bobac3_$(arg slam_methods).launch" /> 
+
+  <!-- rviz -->
+  <group if="$(arg open_slam_rviz)"> 
+    <node pkg="rviz" type="rviz" name="rviz"
+          args="-d $(find bobac3_slam)/rviz/bobac3_$(arg slam_methods).rviz"/>
+  </group>
+</launch>

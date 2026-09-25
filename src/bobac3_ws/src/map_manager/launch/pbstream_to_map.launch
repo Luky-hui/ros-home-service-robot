@@ -1,0 +1,13 @@
+
+<launch>
+  <arg name="map_file" default="test"/>
+  <arg name="resolution" default="0.05"/>
+  <arg name="map_directory" default="$(env MAP_DIRECTORY)"/>
+  <node name="cartographer_pbstream_to_ros_map" pkg="cartographer_ros"
+      type="cartographer_pbstream_to_ros_map" args="
+          -pbstream_filename $(arg map_directory)/$(arg map_file).pbstream
+          -map_filestem $(arg map_directory)/$(arg map_file)
+          -resolution $(arg resolution)"
+      output="screen">
+  </node>
+</launch>

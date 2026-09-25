@@ -1,0 +1,12 @@
+<launch>
+    <!-- 摄像头节点 -->
+    <include file="$(find ar_pose)/launch/usbcam_head.launch"/>
+    <node name="face_rec_topic" pkg="face_rec" type="face_rec_topic.py" output="screen">
+        <!-- 相机话题可通过：rostopic echo /head_camera/image_raw/encoding 查询-->
+        <param name="camera_topic" value="/head_camera/image_raw"/>
+        <!-- 相机编码 -->
+        <param name="image_encoding" value="rgb8"/>
+        <!--识别容差-->
+        <param name="tolerance" value="0.5"/>
+    </node>
+</launch>

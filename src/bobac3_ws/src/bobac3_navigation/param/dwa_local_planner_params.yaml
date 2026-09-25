@@ -1,0 +1,85 @@
+DWAPlannerROS:
+
+# Robot Configuration Parameters
+  max_vel_x: 0.4  # 0.55
+  min_vel_x: -0.4 
+
+  max_vel_y: 0.4  # omni drive robot
+  min_vel_y: -0.4  # omni drive robot
+
+  # 机器人在执行运动时允许的最大,最小线速度（平移速度）
+  # 它用于限制机器人的最大移动速度，以确保在规划路径和避障过程中机器人的运动保持在安全范围内
+  max_vel_trans: 0.6 # choose slightly less than the base's capability
+  min_vel_trans: 0.05  # this is the min trans velocity when there is negligible rotational velocity
+  trans_stopped_vel: 0.1 #定义机器人在停止移动时的线速度阈值。当机器人的线速度低于或等于该阈值时，被认为机器人已停止运动
+
+  # Warning!
+  #   do not set min_trans_vel to 0.0 otherwise dwa will always think translational velocities
+  #   are non-negligible and small in place rotational velocities will be created.
+
+  # 机器人角速度设置
+  max_vel_theta: 0.8  # choose slightly less than the base's capability
+  min_vel_theta: 0.15  # this is the min angular velocity when there is negligible translational velocity
+  theta_stopped_vel: 0.1
+  
+  acc_lim_x: 0.3 # maximum is theoretically 2.0, but we 
+  acc_lim_theta: 1.0
+  acc_lim_y: 0.3      # diff drive robot
+  acc_lim_trans: 0.3
+# Goal Tolerance Parameters
+
+  yaw_goal_tolerance: 0.05  # 控制器靠近给定路径的权重，及贴合全局路径的权重
+  xy_goal_tolerance: 0.15  # 控制器尝试达到其本地目标and控制着速度的权重
+  # latch_xy_goal_tolerance: false
+
+# Forward Simulation Parameters
+  sim_time: 1.5       # 1.7
+  sim_granularity: 0.025
+  angular_sim_granularity: 0.2
+  vx_samples: 6       # 3
+  vy_samples: 3       # diff drive robot, there is only one sample
+  vtheta_samples: 20  # 20
+
+# Trajectory Scoring Parameters
+# cost =
+#   path_distance_bias * (distance to path from the endpoint of the trajectory in meters)
+#   + goal_distance_bias * (distance to local goal from the endpoint of the trajectory in meters)
+#   + occdist_scale * (maximum obstacle cost along the trajectory in obstacle cost (0-254))
+  path_distance_bias: 100.0      # 32.0   - weighting for how much it should stick to the global path plan
+  goal_distance_bias: 24.0      # 24.0   - wighting for how much it should attempt to reach its goal
+  occdist_scale: 0.01            # 0.01   控制器尝试避免障碍物的权重
+
+  forward_point_distance: 0.4 # 0.325  从机器人中心点到另一个得分点的距离 
+
+  # 用于设置机器人在到达目标点后的停止时间缓冲
+  # 如果机器人具有较大的惯性或速度控制较为灵敏，则可以适当增加stop_time_buffer以确保机器人能够安全停止。
+  # 反之，如果机器人的动力学较为缓慢或速度控制较为迟钝，则可以减小stop_time_buffer以提前开始减速过程
+  stop_time_buffer: 0.2         # 0.2  
+
+  # 控制速度的缩放因子
+  # 限制机器人的最大速度，以确保机器人在路径规划过程中不会以过快的速度移动
+  scaling_speed: 0.25           # 0.25   - absolute velocity at which to start scaling the robot's footprint
+
+  # 速度缩放的最大因子
+  # 限制速度缩放的上限，即最大可以将机器人速度缩小的比例。
+  # 如果希望机器人在复杂或密集的环境中以较低的速度运动，可以将max_scaling_factor设置为较小的值，从而限制速度的最大缩小程度
+  # 如果机器人需要以较快的速度移动，并且环境条件允许，可以增大max_scaling_factor以允许更大的速度缩放
+  max_scaling_factor: 0.2       # 0.2    - how much to scale the robot's footprint when at speed.
+  # scaling_speed是用于限制机器人速度的缩放因子
+  # max_scaling_factor是限制速度缩放的最大因子
+
+  # 控制机器人在旋转时的速度缩放比例
+  twirling_scale: 0.0
+
+  # 重置机器人位置动作的振荡距离阈值
+  # 当机器人与上一个计算的路径点的距离超过oscillation_reset_dist时，系统将判定机器人处于振荡状态，并触发重置机制
+# Oscillation Prevention Parameters
+  oscillation_reset_dist: 0.05  # 0.05   - how far to travel before resetting oscillation flags
+  oscillation_reset_angle: 0.2
+# Debugging
+  publish_traj_pc : fasle
+  publish_cost_grid_pc: fasle
+  global_frame_id: odom
+
+# Differential-drive robot configuration - necessary?
+#  holonomic_robot: false

@@ -1,0 +1,4 @@
+string mode #"all"/"not_all"
+string[] goal_names#if mode is "not all"
+---
+bool isSuccess

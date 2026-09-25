@@ -1,0 +1,5 @@
+#相机在后面
+#机器人二次定位后目标姿态
+target_roll: -1.57
+target_pitch: -1.57
+target_yaw: 0

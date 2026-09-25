@@ -1,0 +1,26 @@
+<launch>
+  <arg name="face_mode" default="admin"/>
+  <arg name="voice_mode" default="topic"/>
+  <arg name="config_file" default="$(find service_group_mission)/config/service_group_waypoints.yaml"/>
+  <arg name="spawn_events" default="false"/>
+  <arg name="event_mode" default="random"/>
+  <arg name="event_random_seed" default=""/>
+
+  <include file="$(find raicom_supervisor)/launch/supervisor.launch"/>
+  <include unless="$(eval arg('voice_mode') == 'skip')" file="$(find local_voice_bridge)/launch/local_voice.launch">
+    <arg name="continuous_listen" value="true"/>
+    <arg name="execute_intents" value="false"/>
+  </include>
+  <include unless="$(eval arg('face_mode') == 'skip')" file="$(find face_rec)/launch/face_verification.launch"/>
+  <node if="$(arg spawn_events)" pkg="service_group_mission" type="spawn_service_events.py" name="spawn_service_events" output="screen">
+    <param name="config_file" value="$(arg config_file)"/>
+    <param name="event_mode" value="$(arg event_mode)"/>
+    <param name="random_seed" value="$(arg event_random_seed)"/>
+    <param name="reuse_precomputed_events" value="true"/>
+  </node>
+  <include file="$(find service_group_mission)/launch/patrol_mission.launch">
+    <arg name="config_file" value="$(arg config_file)"/>
+    <arg name="face_mode" value="$(arg face_mode)"/>
+    <arg name="voice_mode" value="$(arg voice_mode)"/>
+  </include>
+</launch>

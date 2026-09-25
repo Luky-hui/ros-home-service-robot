@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="bobac3_serverbot">
+  <xacro:include filename="$(find bobac3_description)/xacro/bobac3_base.xacro"/>
+  <xacro:include filename="$(find bobac3_description)/xacro/basic_kit.xacro"/>
+  <xacro:arg name="laser_type" default="CSPC" />
+  <xacro:arg name="sim" default="0" />
+  
+  <xacro:bobac3_body sim="$(arg sim)" laser_type="$(arg laser_type)"/>
+
+  <xacro:basic_kit parent="cover_link" sim="$(arg sim)" laser_type="$(arg laser_type)"/>
+</robot>

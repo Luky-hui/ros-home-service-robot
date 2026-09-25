@@ -1,0 +1,41 @@
+<library path="lib/libros_map_edit">
+  <class name="ros_map_edit/MapEditTool"
+         type="ros_map_edit::MapEditTool"
+         base_class_type="rviz::Tool">
+    <description>
+      Main map editing tool for switching between different editing modes
+    </description>
+  </class>
+  
+  <class name="ros_map_edit/VirtualWallTool"
+         type="ros_map_edit::VirtualWallTool"
+         base_class_type="rviz::Tool">
+    <description>
+      Tool for creating and editing virtual walls
+    </description>
+  </class>
+  
+  <class name="ros_map_edit/RegionTool"
+         type="ros_map_edit::RegionTool"
+         base_class_type="rviz::Tool">
+    <description>
+      Tool for creating polygon regions on the map
+    </description>
+  </class>
+  
+  <class name="ros_map_edit/MapEraserTool"
+         type="ros_map_edit::MapEraserTool"
+         base_class_type="rviz::Tool">
+    <description>
+      Tool for erasing parts of the map (black/white eraser)
+    </description>
+  </class>
+  
+  <class name="ros_map_edit/MapEditPanel"
+         type="ros_map_edit::MapEditPanel"
+         base_class_type="rviz::Panel">
+    <description>
+      Panel for map editing controls and file management
+    </description>
+  </class>
+</library> 

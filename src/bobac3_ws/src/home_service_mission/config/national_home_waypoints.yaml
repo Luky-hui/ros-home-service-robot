@@ -1,0 +1,690 @@
+waypoints:
+  start:
+    frame_id: map
+    x: 0.0
+    y: 0.0
+    yaw: 0.0034
+  start_return:
+    frame_id: map
+    x: 0.00
+    y: -0.02
+    yaw: 0.0034
+  corridor:
+    frame_id: map
+    x: 1.2435
+    y: 2.1552
+    yaw: -1.579792653589793
+  中转点1:
+    frame_id: map
+    x: 0.2834
+    y: 2.25
+    yaw: 0.0899
+    xy_tolerance: 0.05
+    ignore_yaw: true
+  中转点2:
+    frame_id: map
+    x: 2.2118
+    y: 2.25
+    yaw: 0.0627
+    xy_tolerance: 0.05
+    ignore_yaw: true
+  中转点4:
+    frame_id: map
+    x: 2.2663
+    y: 1.6631
+    yaw: 0.0436
+    xy_tolerance: 0.05
+    ignore_yaw: true
+  restaurant:
+    frame_id: map
+    x: 2.2577
+    y: 1.0762
+    yaw: 0.0244
+  kitchen:
+    frame_id: map
+    x: 1.2505
+    y: 1.0754
+    yaw: 1.5618
+  living_room:
+    frame_id: map
+    x: 1.27
+    y: 0.0302
+    yaw: -1.579792653589793
+  bedroom:
+    frame_id: map
+    x: 2.2657
+    y: 0.0602
+    yaw: -1.5445
+navigation:
+  action_server: /move_base
+  fallback_action_server: /move_base_node
+  server_wait: 240.0
+  goal_timeout: 180.0
+  return_to_start: true
+  corridor_route:
+  - corridor
+  return_route:
+  - kitchen
+  - restaurant
+  - waypoint: 中转点4
+    xy_tolerance: 0.05
+    ignore_yaw: true
+    skip_pause: true
+    precise_adjust: false
+  - waypoint: 中转点2
+    xy_tolerance: 0.05
+    ignore_yaw: true
+    skip_pause: true
+    precise_adjust: false
+    precise_xy_tolerance: 0.05
+  - start_return
+  return_xy_tolerance: 0.1
+  return_ignore_yaw: true
+  return_speed_multiplier: 1.0
+  return_speed_params:
+  - max_vel_x
+  - max_trans_vel
+  - max_vel_theta
+  corridor_position_only_navigation: false
+  accept_aborted_within_goal_tolerance: true
+  near_goal_xy_tolerance: 0.05
+  map_frame: map
+  base_frame: base_footprint
+  position_only_yaw_goal_tolerance: 0.17453292519943295
+  goal_xy_tolerance: 0.05
+  goal_yaw_tolerance: 3.141592653589793
+  action_status_poll_interval: 0.05
+  dynamic_obstacle_stop:
+    enabled: true
+    source: gazebo_model
+    check_mode: center_distance
+    model_states_topic: /gazebo/model_states
+    target_model: cylinder_obstacle
+    robot_model: bobac3_serverbot
+    scan_topic: /scan
+    front_angle: 0.0
+    angle_window: 0.35
+    engage_distance: 0.3
+    stop_distance: 0.45
+    resume_distance: 0.3
+    clear_stable_time: 0.6
+    max_wait: 0.0
+    wait_rate: 20.0
+    stale_after: 0.6
+    startup_sample_wait: 0.08
+    min_valid_ranges: 3
+    replan_budget: 50
+    continuous_yield: false
+    yield_while_close: false
+    yield_on_block: false
+    yield_when_stationary: false
+    stationary_speed: 0.015
+    yield_stationary_time: 0.8
+    yield_speed: 0.12
+    yield_duration: 0.45
+    yield_cooldown: 0.0
+    yield_rate: 20.0
+    cancel_refresh_interval: 0.15
+    guard_engage_distance: 0.3
+    guard_resume_distance: 0.3
+    guard_yield_speed: 0.0
+    guard_reverse_only: true
+    guard_lateral_scale: 0.0
+    guard_rate: 50.0
+    guard_cancel_rate: 0.0
+  wait_until_stopped:
+    odom_topic: /odom
+    stable_time: 0.35
+    timeout: 1.5
+    linear_threshold: 0.015
+    angular_threshold: 0.04
+  dwa_reconfigure_service: /move_base_node/DWAPlannerROS/set_parameters
+  dwa_yaw_goal_tolerance_param: /move_base_node/DWAPlannerROS/yaw_goal_tolerance
+  initial_open_loop_escape:
+    enabled: false
+    linear_x: 0.12
+    linear_y: 0.0
+    angular_z: 0.0
+    duration: 7.5
+    rate: 10.0
+  final_open_loop_return:
+    enabled: false
+    linear_x: -0.12
+    linear_y: 0.0
+    angular_z: 0.0
+    duration: 7.5
+    rate: 10.0
+  clear_costmaps_before_goal: true
+  clear_costmaps_service: /move_base_node/clear_costmaps
+  clear_costmaps_wait: 5.0
+  retry_on_abort: 1
+  retry_pause: 1.0
+  soft_fail_on_navigation_error: true
+  soft_fail_max_distance: 0.3
+  navigation_failure_recovery:
+    enabled: true
+    retry_count: 1
+    retry_nav_timeout: 45.0
+    retry_pause: 0.2
+    virtual_wall_escape:
+      enabled: true
+      engage_distance: 0.32
+      speed: 0.08
+      max_axis_speed: 0.08
+      duration: 1.1
+      rate: 20.0
+    motions:
+    - linear_x: 0.05
+      linear_y: 0.0
+      angular_z: 0.0
+      duration: 1.5
+      rate: 20.0
+  precise_arrival_adjust:
+    enabled: true
+    start_xy_tolerance: 0.07
+    target_xy_tolerance: 0.04
+    timeout: 5.0
+    max_speed: 0.05
+    min_speed: 0.008
+    gain: 0.6
+    stable_cycles: 3
+    rate: 20.0
+    waypoints:
+    - corridor
+    - restaurant
+    - kitchen
+    - living_room
+    - bedroom
+forbidden_zones:
+  enabled: false
+  virtual_wall_file: /home/robot/bobac3_ws/src/bobac3_navigation/maps/national_2026.json
+  map_topic: /virtual_wall_map
+  note: Forbidden zone disabled; national_2026.json vws is empty.
+  zones: []
+slow_zones:
+  enabled: false
+  default_multiplier: 0.45
+  speed_params:
+  - max_vel_x
+  - max_vel_y
+  - max_trans_vel
+  - max_vel_theta
+  speed_values:
+    max_vel_x: 0.15
+    max_vel_y: 0.12
+    max_trans_vel: 0.15
+    max_vel_theta: 0.9
+  note: Slow area limits DWA speed to fixed emergency-stop-friendly values while the
+    robot is inside the polygon.
+  zones: []
+arrival_pause:
+  enabled: true
+  seconds: 5.0
+  waypoints:
+  - restaurant
+  - restaurant_center
+  - kitchen
+  - living_room
+  - bedroom
+  - corridor
+  - start
+  - start_return
+  - charge
+  - start_exit
+interaction:
+  face_topic: /face_detection
+  command_topic: /service_group_mission/voice_command
+  intent_topic: /local_voice/intent
+  tts_service: /voice_tts
+  wake_prompt: 你好，有什么需要帮助的吗？
+  accept: 好的，请跟我来。
+semantic_intent:
+  enabled: true
+  model_enabled: true
+  model_path: /home/robot/llm_intent/models/qwen2.5-1.5b-instruct-gguf/qwen2.5-1.5b-instruct-q4_k_m.gguf
+  reply_model_path: /home/robot/llm_intent/models/qwen2.5-0.5b-instruct-gguf/qwen2.5-0.5b-instruct-q4_k_m.gguf
+  llama_binary: /home/robot/llm_intent/llama.cpp/build_tools/bin/llama-completion
+  timeout: 8.0
+  max_tokens: 64
+  temperature: 0.0
+  polish_rule_replies: false
+guide:
+  position_only_navigation: false
+  return_route:
+  - restaurant
+  - waypoint: 中转点4
+    xy_tolerance: 0.05
+    ignore_yaw: true
+    skip_pause: true
+    precise_adjust: false
+  - waypoint: 中转点2
+    xy_tolerance: 0.05
+    ignore_yaw: true
+    skip_pause: true
+    precise_adjust: false
+    precise_xy_tolerance: 0.05
+  - waypoint: 中转点1
+    xy_tolerance: 0.12
+    ignore_yaw: true
+    skip_pause: true
+    precise_adjust: false
+  - waypoint: start_return
+    xy_tolerance: 0.05
+    ignore_yaw: true
+    skip_pause: true
+    precise_adjust: false
+  return_final_adjust_waypoint: start_return
+  return_final_adjust_xy_tolerance: 0.02
+  return_final_adjust_timeout: 6.0
+  return_final_adjust_accept_timeout: true
+  return_final_adjust_pause: true
+  return_xy_tolerance: 0.05
+  return_ignore_yaw: true
+  trigger_phrases:
+  - 可以带我参观一下吗
+  - 带我参观一下
+  - 参观一下
+  - 可以带我导览一下吗
+  - 带我导览一下
+  - 导览一下
+  - 介绍一下这个家
+  - 带我看看房间
+  interference_replies:
+  - phrases:
+    - 参观完了
+    - 参观完成
+    - 参观完毕
+    - 参观结束
+    - 已经参观完了
+    - 已经参观完成
+    - 导览完了
+    - 导览完成
+    - 导览结束
+    - 不用参观了
+    - 先不参观
+    - 不参观了
+    - 不需要参观
+    - 不用带我参观
+    - 不用导览
+    - 先不导览
+    - 别参观了
+    - 不要参观
+    - 停止参观
+    - 取消参观
+    - 先等一下
+    - 暂时不用
+    - 就不带了
+    speech: 好的，需要参观时再告诉我。
+  route:
+  - restaurant
+  - kitchen
+  - living_room
+  - bedroom
+  introductions:
+    restaurant: 这里是餐厅，是用餐和交流的区域。
+    kitchen: 这里是厨房，是准备和烹饪食物的区域。
+    living_room: 这里是客厅，是休息和接待来访者的区域。
+    bedroom: 这里是卧室，是睡眠和休息的区域。
+    restaurant_center: 这里是餐厅，是用餐和交流的区域。
+  approach_routes:
+    restaurant:
+    - 中转点2
+  precise_xy_tolerance: 0.025
+  precise_adjust_timeout: 3.0
+  accept_precise_adjust_timeout: true
+assistant:
+  vision_start_speech: 我要开始识别啦，请准备好蔬菜。
+  trigger_phrases:
+  - 给我推荐一下今天适合做什么菜
+  - 推荐一下今天适合做什么菜
+  - 去看看冰箱里有什么
+  - 看一下冰箱里有什么
+  target_waypoint: kitchen
+  approach_route:
+  - 中转点2
+  - waypoint: restaurant
+    xy_tolerance: 0.05
+    ignore_yaw: true
+    skip_pause: true
+    precise_adjust: false
+  return_route:
+  - waypoint: restaurant
+    xy_tolerance: 0.05
+    ignore_yaw: true
+    skip_pause: true
+    precise_adjust: false
+  - waypoint: 中转点4
+    xy_tolerance: 0.05
+    ignore_yaw: true
+    skip_pause: true
+    precise_adjust: false
+  - waypoint: 中转点2
+    xy_tolerance: 0.05
+    ignore_yaw: true
+    skip_pause: true
+    precise_adjust: false
+    precise_xy_tolerance: 0.05
+  - waypoint: 中转点1
+    xy_tolerance: 0.12
+    ignore_yaw: true
+    skip_pause: true
+    precise_adjust: false
+  - waypoint: start_return
+    xy_tolerance: 0.05
+    ignore_yaw: true
+    skip_pause: false
+    precise_adjust: false
+  return_xy_tolerance: 0.05
+  return_ignore_yaw: true
+  tts_precache_on_start: true
+  start_speech: 好的，我去看看冰箱里有什么。
+  no_food_speech: 没有识别到冰箱里的食材。
+  foods_prefix: 冰箱里有
+  recipe_template: 推荐做%s。%s
+  image_topic: /home/robot/Desktop/d6760c04b107afcafff72f2a6da4fd00.jpg
+  confidence: 0.5
+  sample_count: 3
+  sample_interval: 0.3
+  vision_start_delay: 3.0
+  minimum_consecutive_count: 1
+  minimum_report_count: 3
+  maximum_report_count: 3
+  simulation_fallback:
+    enabled: false
+    fill_to_minimum: true
+    labels:
+    - 上海青
+    - 土豆
+    - 猪肉
+    - 玉米
+    - 番茄
+    - 苹果
+    - 茄子
+    - 虾
+    - 豆腐
+    - 青椒
+    - 香蕉
+    - 鱼肉
+    - 鸡蛋
+    - 黄瓜
+    random_fill_to_minimum: true
+  food_labels:
+  - 上海青
+  - 土豆
+  - 猪肉
+  - 玉米
+  - 番茄
+  - 苹果
+  - 茄子
+  - 虾
+  - 豆腐
+  - 青椒
+  - 香蕉
+  - 鱼肉
+  - 鸡蛋
+  - 黄瓜
+  recipes:
+  - name: 番茄炒蛋配青椒
+    requires:
+    - 番茄
+    - 鸡蛋
+    - 青椒
+    method: 番茄切块，鸡蛋打散炒熟盛出，青椒切块，先炒番茄出汁，再倒入鸡蛋和青椒翻炒调味。
+  - name: 番茄炒蛋
+    requires:
+    - 番茄
+    - 鸡蛋
+    method: 番茄切块，鸡蛋打散炒熟盛出，再炒番茄出汁，倒回鸡蛋翻炒调味。
+  - name: 青椒炒肉
+    requires:
+    - 青椒
+    - 猪肉
+    method: 青椒切丝，猪肉切片腌制，先炒肉片，再放青椒炒熟并调味。
+  - name: 上海青豆腐汤
+    requires:
+    - 上海青
+    - 豆腐
+    method: 上海青洗净切段，豆腐切块，水开后加入豆腐和上海青煮熟调味。
+  - name: 黄瓜炒虾仁
+    requires:
+    - 黄瓜
+    - 虾
+    method: 虾仁腌制后炒至变色，加入黄瓜片快速翻炒并调味。
+  - name: 土豆烧肉
+    requires:
+    - 土豆
+    - 猪肉
+    method: 猪肉煸香后加入土豆块，加水焖熟并调味。
+  - name: 番茄豆腐
+    requires:
+    - 番茄
+    - 豆腐
+    method: 番茄炒出汤汁，加入豆腐块小火煮入味。
+  - name: 玉米炒肉末
+    requires:
+    - 玉米
+    - 猪肉
+    method: 玉米粒焯水，猪肉剁末炒香，加入玉米粒翻炒并调味。
+  - name: 红烧茄子
+    requires:
+    - 茄子
+    method: 茄子切块煎软，加入调味汁烧至入味。
+  - name: 清蒸鱼肉
+    requires:
+    - 鱼肉
+    method: 鱼肉处理干净后加葱姜蒸熟，淋上蒸鱼豉油。
+  - name: 清炒虾仁
+    requires:
+    - 虾
+    method: 虾仁腌制后快速滑炒，炒熟后调味。
+  - name: 水果拼盘
+    requires:
+    - 苹果
+    - 香蕉
+    method: 苹果和香蕉切块，摆盘后即可食用。
+find_object:
+  return_route:
+  - waypoint: start_return
+    xy_tolerance: 0.05
+    ignore_yaw: true
+    skip_pause: true
+    precise_adjust: false
+  return_xy_tolerance: 0.1
+  return_ignore_yaw: true
+  image_topic: /top_camera/image_raw
+  confidence: 0.25
+  sample_count: 3
+  sample_interval: 0.3
+  start_speech_template: 好的，我去找%s。
+  found_speech_template: 找到%s啦，在这里！
+  empty_speech: 这里什么都没有
+  other_prefix: 我看到了
+  not_found_speech_template: 没有找到%s。
+  trigger_phrases:
+    cell phone:
+    - 帮我找一下手机
+    - 找一下手机
+    - 找手机
+    backpack:
+    - 帮我找一下书包
+    - 找一下书包
+    - 找书包
+  route:
+  - waypoint: restaurant
+    ignore_yaw: true
+    align_yaw: true
+    align_yaw_tolerance: 0.17453292519943295
+    skip_pause: true
+    approach_route:
+    - waypoint: 中转点2
+      ignore_yaw: true
+      skip_pause: true
+      xy_tolerance: 0.05
+      precise_adjust: false
+    precise_xy_tolerance: 0.02
+    precise_adjust_fallback_xy_tolerance: 0.03
+  - waypoint: kitchen
+    ignore_yaw: true
+    align_yaw: true
+    align_yaw_tolerance: 0.17453292519943295
+    skip_pause: true
+    precise_xy_tolerance: 0.02
+    precise_adjust_fallback_xy_tolerance: 0.03
+  - waypoint: living_room
+    ignore_yaw: true
+    align_yaw: true
+    align_yaw_tolerance: 0.17453292519943295
+    skip_pause: true
+    precise_xy_tolerance: 0.02
+    precise_adjust_fallback_xy_tolerance: 0.03
+  - waypoint: bedroom
+    ignore_yaw: true
+    align_yaw: true
+    align_yaw_tolerance: 0.17453292519943295
+    skip_pause: true
+    precise_xy_tolerance: 0.02
+    precise_adjust_fallback_xy_tolerance: 0.03
+  - waypoint: restaurant
+    ignore_yaw: true
+    skip_pause: true
+    precise_adjust: false
+    detect: false
+  - waypoint: 中转点4
+    ignore_yaw: true
+    skip_pause: true
+    xy_tolerance: 0.05
+    precise_adjust: false
+    detect: false
+  - waypoint: 中转点2
+    ignore_yaw: true
+    skip_pause: true
+    xy_tolerance: 0.05
+    precise_adjust: false
+    detect: false
+  - waypoint: corridor
+    ignore_yaw: true
+    align_yaw: true
+    align_yaw_tolerance: 0.17453292519943295
+    skip_pause: true
+    precise_xy_tolerance: 0.02
+    precise_adjust_fallback_xy_tolerance: 0.03
+  labels:
+  - cell phone
+  - backpack
+  simulation_fallback:
+    enabled: false
+    room_results:
+      restaurant: []
+      kitchen: []
+      living_room:
+      - backpack
+      bedroom:
+      - cell phone
+      corridor: []
+finish:
+  trigger_phrases:
+  - 返回充电桩
+  - 去充电
+  - 开始充电
+  - 任务完成
+  pre_charge_target: start
+  charge_target: ''
+  start_speech: 准备返回充电桩。
+  start_speech_async: true
+  complete_speech: 开始充电，任务完成。
+docking:
+  enabled: true
+  method: ar_pose
+  track_service: /track
+  ar_id: 0
+  goal_dist: 0.35
+  service_wait: 10.0
+  rotate_after_track: false
+  rotate_angle: 3.1415926
+  rotate_timeout: 20.0
+  rotate_speed: 0.2
+  yaw_tolerance: 0.035
+  stable_cycles: 8
+  reverse_after_rotate: true
+  reverse_distance: 0.45
+  reverse_speed: -0.06
+  reverse_timeout: 26.0
+  map_frame: map
+  base_frame: base_footprint
+  reverse_distance_from_marker: true
+  marker_topic: /base_camera/ar_pose_marker
+  marker_distance_axis: x
+  final_marker_distance: 0.05
+  reverse_distance_min: 0.0
+  reverse_distance_max: 0.7
+  reverse_distance_fallback: 0.25
+  pre_align_yaw: true
+  pre_align_target_yaw: 3.139792653589793
+  pre_align_yaw_tolerance: 0.17453292519943295
+  pre_align_timeout: 20.0
+  pre_align_speed: 0.2
+  pre_align_stable_cycles: 4
+  direct_marker_docking: true
+  use_track_service: false
+  marker_lateral_align: true
+  marker_lateral_axis: y
+  marker_lateral_tolerance: 0.05
+  marker_lateral_kp: 0.4
+  marker_lateral_max_speed: 0.04
+  marker_align_timeout: 10.0
+  marker_align_stable_cycles: 4
+  marker_wait: 1.0
+  reverse_distance_offset: 0.0
+  reverse_with_marker_feedback: true
+  reverse_marker_missing_grace: 2.0
+  reverse_marker_stop_stable_cycles: 3
+  reverse_marker_lost_success_travel_margin: 0.04
+  reverse_marker_lost_success_distance_margin: 0.04
+  reverse_marker_lost_stop_distance: 0.225
+  reverse_marker_lost_stop_as_success: true
+  reverse_marker_expected_travel_stop_margin: 0.02
+  reverse_marker_timeout_stop_as_success: true
+  reverse_marker_odom_fallback: false
+  reverse_marker_lost_lidar_fallback: false
+  reverse_marker_lost_lidar_start_distance: 0.3
+  reverse_marker_lost_extra_travel: 0.01
+  reverse_marker_lost_extra_start_distance: 0.26
+  reverse_marker_lost_extra_speed: -0.06
+  reverse_marker_lost_extra_timeout: 2.0
+  reverse_lidar_topic: /scan
+  reverse_lidar_rear_angle: 3.141592653589793
+  reverse_lidar_angle_window: 0.35
+  reverse_lidar_stop_distance: 0.15
+  reverse_lidar_stop_tolerance: 0.01
+  reverse_lidar_timeout: 8.0
+  reverse_lidar_timeout_stop_as_success: true
+  reverse_lidar_min_speed: 0.015
+  reverse_lidar_max_speed: 0.06
+  reverse_lidar_kp: 0.8
+  reverse_distance_kp: 0.8
+  reverse_min_speed: 0.015
+  reverse_yaw_correction: true
+  reverse_yaw_kp: 0.8
+  reverse_yaw_max_speed: 0.08
+chinese_names:
+  restaurant: 餐厅
+  kitchen: 厨房
+  living_room: 客厅
+  bedroom: 卧室
+  corridor: 走廊
+  cell phone: 手机
+  backpack: 书包
+  上海青: 上海青
+  土豆: 土豆
+  猪肉: 猪肉
+  玉米: 玉米
+  番茄: 番茄
+  苹果: 苹果
+  茄子: 茄子
+  虾: 虾
+  豆腐: 豆腐
+  青椒: 青椒
+  香蕉: 香蕉
+  鱼肉: 鱼肉
+  鸡蛋: 鸡蛋
+  黄瓜: 黄瓜

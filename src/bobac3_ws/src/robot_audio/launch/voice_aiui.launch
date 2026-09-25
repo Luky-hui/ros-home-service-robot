@@ -1,0 +1,3 @@
+<launch>
+  <node name="voice_aiui_node" pkg="robot_audio" type="voice_aiui_node" output="screen"/>
+</launch>

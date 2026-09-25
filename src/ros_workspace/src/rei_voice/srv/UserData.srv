@@ -1,0 +1,6 @@
+string email
+string password
+string code
+---
+bool success
+string message

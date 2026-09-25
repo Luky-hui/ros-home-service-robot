@@ -1,0 +1,216 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="bobac3_gazebo_plugin">
+  <xacro:macro name="bobac3_gazebo_plugin">
+    <gazebo>
+      <plugin name="object_controller" filename="libgazebo_ros_planar_move.so">
+        <commandTopic>cmd_vel</commandTopic>
+        <odometryTopic>odom</odometryTopic>
+        <odometryFrame>odom</odometryFrame>
+        <odometryRate>10.0</odometryRate>
+        <robotBaseFrame>base_footprint</robotBaseFrame>
+      </plugin>
+    </gazebo>
+    <gazebo reference="charge_port_link">
+      <material>Gazebo/Orange</material>
+    </gazebo>
+    <gazebo reference="base_footprint">
+      <material>Gazebo/GreyTransparent</material>
+    </gazebo>
+    <gazebo reference="base_link">
+      <material>Gazebo/White</material>
+    </gazebo>
+    <gazebo reference="humtemper_link">
+      <material>Gazebo/FlatBlack</material>
+    </gazebo>
+    <gazebo reference="left_ultrasound_link">
+      <material>Gazebo/FlatBlack</material>
+    </gazebo>
+    <gazebo reference="front_lidar_link">
+      <material>Gazebo/BlueLaser</material>
+    </gazebo>
+    <gazebo reference="right_ultrasound_link">
+      <material>Gazebo/FlatBlack</material>
+    </gazebo>
+    <gazebo reference="smoke_sensor_link">
+      <material>Gazebo/FlatBlack</material>
+    </gazebo>
+    <gazebo reference="rear_lidar_link">
+      <material>Gazebo/BlueLaser</material>
+    </gazebo>
+    <gazebo reference="cover_link">
+      <material>Gazebo/FlatBlack</material>
+    </gazebo>
+    <gazebo reference="charge_link">
+      <material>Gazebo/OrangeTransparent</material>
+    </gazebo>
+    <gazebo reference="base_depth_link">
+      <material>Gazebo/FlatBlack</material>
+    </gazebo>
+    <gazebo reference="fuse_lidar_link">
+      <material>Gazebo/BlueLaser</material>
+      <sensor type="ray" name="rplidar_sensor">
+        <pose>0 0 0 0 0 0</pose>
+        <visualize>false</visualize>
+        <update_rate>10</update_rate>
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>720</samples>
+              <resolution>1</resolution>
+              <min_angle>-3.14159</min_angle>
+              <max_angle>3.14159</max_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>0.2</min>
+            <max>30.0</max>
+            <resolution>0.01</resolution>
+          </range>
+          <noise>
+            <type>gaussian</type>
+            <!-- Noise parameters based on published spec for Hokuyo laser
+                 achieving "+-30mm" accuracy at range < 10m.  A mean of 0.0m and
+                 stddev of 0.01m will put 99.7% of samples within 0.03m of the true
+                 reading. -->
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+        </ray>
+        <plugin name="bobac3_fuse_lidar" filename="libgazebo_ros_laser.so">
+          <topicName>/scan</topicName>
+          <frameName>fuse_lidar_link</frameName>
+        </plugin>
+      </sensor>
+    </gazebo>
+    <gazebo reference="bottom_camera_link">
+      <material>Gazebo/FlatBlack</material>
+      <sensor type="camera" name="bottom_camera">
+        <update_rate>30.0</update_rate>
+        <camera name="bottom">
+          <horizontal_fov>1.3962634</horizontal_fov>
+          <image>
+            <width>720</width>
+            <height>640</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.02</near>
+            <far>300</far>
+          </clip>
+          <noise>
+            <type>gaussian</type>
+            <!-- Noise is sampled independently per pixel on each frame.
+                 That pixel's noise value is added to each of its color
+                 channels, which at that point lie in the range [0,1]. -->
+            <mean>0.0</mean>
+            <stddev>0.007</stddev>
+          </noise>
+        </camera>
+        <plugin name="bottom_camera" filename="libgazebo_ros_camera.so">
+          <alwaysOn>true</alwaysOn>
+          <updateRate>0.0</updateRate>
+          <cameraName>/bottom_camera</cameraName>
+          <imageTopicName>image_raw</imageTopicName>
+          <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+          <frameName>bottom_camera_optical_link</frameName>
+          <hackBaseline>0.07</hackBaseline>
+          <distortionK1>0.0</distortionK1>
+          <distortionK2>0.0</distortionK2>
+          <distortionK3>0.0</distortionK3>
+          <distortionT1>0.0</distortionT1>
+          <distortionT2>0.0</distortionT2>
+        </plugin>
+      </sensor>
+    </gazebo>
+    <gazebo reference="top_camera_optical_link">
+      <material>Gazebo/FlatBlack</material>
+      <sensor type="camera" name="top_camera">
+        <always_on>true</always_on>
+        <visualize>false</visualize>
+        <update_rate>30.0</update_rate>
+        <camera name="top">
+          <horizontal_fov>1.3962634</horizontal_fov>
+          <image>
+            <width>720</width>
+            <height>640</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.02</near>
+            <far>300</far>
+          </clip>
+          <noise>
+            <type>gaussian</type>
+            <!-- Noise is sampled independently per pixel on each frame.
+                 That pixel's noise value is added to each of its color
+                 channels, which at that point lie in the range [0,1]. -->
+            <mean>0.0</mean>
+            <stddev>0.007</stddev>
+          </noise>
+        </camera>
+        <plugin name="top_camera" filename="libgazebo_ros_camera.so">
+          <alwaysOn>true</alwaysOn>
+          <updateRate>0.0</updateRate>
+          <cameraName>/top_camera</cameraName>
+          <imageTopicName>image_raw</imageTopicName>
+          <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+          <frameName>top_camera_optical_link</frameName>
+          <hackBaseline>0.07</hackBaseline>
+          <distortionK1>0.0</distortionK1>
+          <distortionK2>0.0</distortionK2>
+          <distortionK3>0.0</distortionK3>
+          <distortionT1>0.0</distortionT1>
+          <distortionT2>0.0</distortionT2>
+        </plugin>
+      </sensor>
+    </gazebo>
+
+    <link name="gazebo_depth_optical_link" />
+    <joint name="gazebo_depth_camera_joint" type="fixed">
+      <parent link="bobac3_base/Cam_base_link" />
+      <child link="gazebo_depth_optical_link" />
+      <origin xyz="0 0 0" rpy="-1.57079 0 -1.57079" />
+    </joint>
+    <gazebo reference="bobac3_base/Cam_base_link">
+      <sensor name="berxel_base_camera" type="depth">
+        <update_rate>20</update_rate>
+        <camera>
+          <horizontal_fov>1.047198</horizontal_fov>
+          <image>
+            <width>640</width>
+            <height>480</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.05</near>
+            <far>3</far>
+          </clip>
+        </camera>
+        <plugin name="berxel_base_controller" filename="libgazebo_ros_openni_kinect.so">
+          <baseline>0.2</baseline>
+          <alwaysOn>true</alwaysOn>
+          <updateRate>5.0</updateRate>
+          <cameraName>berxel_base_camera</cameraName>
+          <imageTopicName>/berxel_base/color/image_raw</imageTopicName>
+          <cameraInfoTopicName>/berxel_base/color/camera_info</cameraInfoTopicName>
+          <depthImageTopicName>/berxel_base/depth/image_raw</depthImageTopicName>
+          <depthImageInfoTopicName>/berxel_base/depth/camera_info</depthImageInfoTopicName>
+          <pointCloudTopicName>/berxel_base/depth/points</pointCloudTopicName>
+          <frameName>gazebo_depth_optical_link</frameName>
+          <pointCloudCutoff>0.5</pointCloudCutoff>
+          <pointCloudCutoffMax>3.0</pointCloudCutoffMax>
+          <distortionK1>0.00000001</distortionK1>
+          <distortionK2>0.00000001</distortionK2>
+          <distortionK3>0.00000001</distortionK3>
+          <distortionT1>0.00000001</distortionT1>
+          <distortionT2>0.00000001</distortionT2>
+          <CxPrime>0</CxPrime>
+          <Cx>0</Cx>
+          <Cy>0</Cy>
+          <focalLength>0</focalLength>
+          <hackBaseline>0</hackBaseline>
+        </plugin>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+</robot>

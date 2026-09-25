@@ -1,0 +1,8 @@
+<launch>
+  <node pkg="cspc_lidar" type="cspc_lidar" name="cspc_lidar" output="screen">
+    <param name="frame_id" type="string" value="laser_link"/>
+    <param name="port" type="string" value="/dev/ttyUSB1"/>
+    <param name="baud_rate" type="int" value="230400"/>
+    <param name="version" type="int" value="4"/>
+  </node>
+</launch>

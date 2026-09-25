@@ -1,0 +1,19 @@
+<launch>
+  <arg name="camera_name" default="base_camera" />
+  <arg name="video_device" default="$(optenv BASE_CAMERA_DEVICE /dev/base_camera)" />
+  <node name="base_camera" pkg="usb_cam" type="usb_cam_node" output="screen">
+    <!--这是底盘摄像头的launch文件，请修改-->
+    <param name="video_device" value="$(arg video_device)" />
+    <!--分辨率640*480（我们的摄像头最高支持1280*720但是在这里没必要）-->
+    <param name="image_width" value="640" />
+    <param name="image_height" value="480" />
+    <param name="pixel_format" value="yuyv" />
+    <param name="camera_frame_id" value="bottom_camera_optical_link" />
+    <param name="io_method" value="mmap" />
+    <param name="framerate" value="60" />
+    <param name="camera_name" value="base_camera"/>
+    <!--加载标定文件-->
+    <param name="camera_info_url" type="string"
+      value="file://$(find ar_pose)/cam_info/base_camera.yaml" />
+  </node>
+</launch>

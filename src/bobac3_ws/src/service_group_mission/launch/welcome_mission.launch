@@ -1,0 +1,21 @@
+<launch>
+  <arg name="config_file" default="$(find service_group_mission)/config/service_group_waypoints.yaml"/>
+  <arg name="face_mode" default="any"/>
+  <arg name="voice_mode" default="topic"/>
+  <arg name="command_topic" default="/service_group_mission/voice_command"/>
+  <arg name="test_all_venues" default="false"/>
+
+  <node name="service_group_welcome_mission"
+        pkg="service_group_mission"
+        type="service_group_mission_node.py"
+        output="screen">
+    <param name="mission_type" value="welcome"/>
+    <param name="config_file" value="$(arg config_file)"/>
+    <param name="face_mode" value="$(arg face_mode)"/>
+    <param name="voice_mode" value="$(arg voice_mode)"/>
+    <param name="command_topic" value="$(arg command_topic)"/>
+    <param name="tts_service_wait" value="6.5"/>
+    <param name="tts_ready_settle" value="0.5"/>
+    <param name="test_all_venues" value="$(arg test_all_venues)"/>
+  </node>
+</launch>

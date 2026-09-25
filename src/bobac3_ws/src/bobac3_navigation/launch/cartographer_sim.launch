@@ -1,0 +1,16 @@
+<launch>
+  <arg name="map_file" default="test"/>
+  <node name="cartographer_node" pkg="cartographer_ros"
+      type="cartographer_node" args="
+          -configuration_directory $(find bobac3_slam)/config
+          -configuration_basename location_sim.lua
+          -load_state_filename $(find bobac3_navigation)/maps/$(arg map_file).pbstream"
+      output="screen">
+        <param name="localization" type="bool" value="true"/>
+        <param name="set_inital_pose_x" type="double" value="0.0"/>
+        <param name="set_inital_pose_y" type="double" value="0.0"/>
+        <param name="set_inital_pose_oz" type="double" value="0.00"/>
+        <param name="set_inital_pose_ow" type="double" value="1.0"/>
+        <!-- <remap from="/scan" to="/fuse_scan" /> -->
+  </node>
+</launch>

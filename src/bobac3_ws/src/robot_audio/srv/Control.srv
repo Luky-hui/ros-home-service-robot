@@ -1,0 +1,4 @@
+string[] controlInfo
+float32 value
+---
+bool result

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>raicom_supervisor</name>
+  <version>0.1.0</version>
+  <description>Emergency stop and task status supervisor for the RAICOM robot.</description>
+  <maintainer email="maintainer@example.com">robot_user</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>actionlib_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>rospy</depend>
+  <depend>std_msgs</depend>
+  <depend>std_srvs</depend>
+  <exec_depend>face_rec</exec_depend>
+  <exec_depend>home_service_mission</exec_depend>
+  <exec_depend>local_voice_bridge</exec_depend>
+  <exec_depend>raicom_vision</exec_depend>
+  <exec_depend>service_group_mission</exec_depend>
+</package>

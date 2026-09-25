@@ -1,0 +1,16 @@
+<launch>
+  <arg name="config_file" default="$(find local_voice_bridge)/config/voice_config.yaml"/>
+  <arg name="face_mode" default="admin"/>
+  <arg name="execute_intents" default="true"/>
+
+  <include file="$(find local_voice_bridge)/launch/local_voice.launch">
+    <arg name="config_file" value="$(arg config_file)"/>
+    <arg name="continuous_listen" value="true"/>
+    <arg name="execute_intents" value="$(arg execute_intents)"/>
+  </include>
+
+  <include file="$(find service_group_mission)/launch/patrol_mission.launch">
+    <arg name="face_mode" value="$(arg face_mode)"/>
+    <arg name="voice_mode" value="topic"/>
+  </include>
+</launch>

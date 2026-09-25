@@ -1,0 +1,15 @@
+<?xml version='1.0'?>
+<sdf version='1.7'>
+  <model name='rei_begin'>
+    <link name='link_0'>
+      <visual name='visual'>
+        
+        <geometry>
+          <mesh>
+            <uri>model://reinovo_raicom_oryxbot/rei_begin/meshes/begin.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+  </model>
+</sdf>

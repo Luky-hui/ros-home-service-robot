@@ -1,0 +1,15 @@
+<launch>
+  <arg name="face_mode" default="any"/>
+  <arg name="voice_mode" default="topic"/>
+
+  <include file="$(find raicom_supervisor)/launch/supervisor.launch"/>
+  <include file="$(find local_voice_bridge)/launch/local_voice.launch">
+    <arg name="continuous_listen" value="true"/>
+    <arg name="execute_intents" value="false"/>
+  </include>
+  <include unless="$(eval arg('face_mode') == 'skip')" file="$(find face_rec)/launch/face_detection.launch"/>
+  <include file="$(find service_group_mission)/launch/welcome_mission.launch">
+    <arg name="face_mode" value="$(arg face_mode)"/>
+    <arg name="voice_mode" value="$(arg voice_mode)"/>
+  </include>
+</launch>

@@ -1,0 +1,5 @@
+int8 type #0: auto, 1: yaml, 2:json
+string task_file
+---
+string msg
+int8 err

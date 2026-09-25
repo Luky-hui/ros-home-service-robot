@@ -1,0 +1,6 @@
+int8 mode
+string str
+---
+face_rec/face_results result
+string message
+bool success

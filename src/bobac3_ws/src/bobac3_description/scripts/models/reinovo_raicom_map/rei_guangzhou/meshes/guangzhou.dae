@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <asset>
+    <contributor>
+      <author>Blender User</author>
+      <authoring_tool>Blender 3.3.0 commit date:2022-09-06, commit time:15:39, hash:0759f671ce1f</authoring_tool>
+    </contributor>
+    <created>2023-06-06T10:28:45</created>
+    <modified>2023-06-06T10:28:45</modified>
+    <unit name="meter" meter="1"/>
+    <up_axis>Z_UP</up_axis>
+  </asset>
+  <library_effects>
+    <effect id="guangzhou-effect">
+      <profile_COMMON>
+        <newparam sid="guangzhou_png-surface">
+          <surface type="2D">
+            <init_from>guangzhou_png</init_from>
+          </surface>
+        </newparam>
+        <newparam sid="guangzhou_png-sampler">
+          <sampler2D>
+            <source>guangzhou_png-surface</source>
+          </sampler2D>
+        </newparam>
+        <technique sid="common">
+          <lambert>
+            <emission>
+              <color sid="emission">0.8 0.4 0 1</color>
+            </emission>
+            <diffuse>
+              <texture texture="guangzhou_png-sampler" texcoord="UV 贴图"/>
+            </diffuse>
+            <index_of_refraction>
+              <float sid="ior">1.45</float>
+            </index_of_refraction>
+          </lambert>
+        </technique>
+      </profile_COMMON>
+    </effect>
+  </library_effects>
+  <library_images>
+    <image id="guangzhou_png" name="guangzhou_png">
+      <init_from>guangzhou.png</init_from>
+    </image>
+  </library_images>
+  <library_materials>
+    <material id="guangzhou-material" name="guangzhou">
+      <instance_effect url="#guangzhou-effect"/>
+    </material>
+  </library_materials>
+  <library_geometries>
+    <geometry id="guangzhou-mesh" name="guangzhou">
+      <mesh>
+        <source id="guangzhou-mesh-positions">
+          <float_array id="guangzhou-mesh-positions-array" count="12">-0.8863636 -0.5 0 0.8863636 -0.5 0 -0.8863636 0.5 0 0.8863636 0.5 0</float_array>
+          <technique_common>
+            <accessor source="#guangzhou-mesh-positions-array" count="4" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="guangzhou-mesh-normals">
+          <float_array id="guangzhou-mesh-normals-array" count="3">0 0 1</float_array>
+          <technique_common>
+            <accessor source="#guangzhou-mesh-normals-array" count="1" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="guangzhou-mesh-map-0">
+          <float_array id="guangzhou-mesh-map-0-array" count="12">1 0 0 1 0 0 1 0 1 1 0 1</float_array>
+          <technique_common>
+            <accessor source="#guangzhou-mesh-map-0-array" count="6" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="guangzhou-mesh-vertices">
+          <input semantic="POSITION" source="#guangzhou-mesh-positions"/>
+        </vertices>
+        <triangles material="guangzhou-material" count="2">
+          <input semantic="VERTEX" source="#guangzhou-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#guangzhou-mesh-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#guangzhou-mesh-map-0" offset="2" set="0"/>
+          <p>1 0 0 2 0 1 0 0 2 1 0 3 3 0 4 2 0 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+  </library_geometries>
+  <library_visual_scenes>
+    <visual_scene id="Scene" name="Scene">
+      <node id="guangzhou" name="guangzhou" type="NODE">
+        <matrix sid="transform">0.4512821 0 0 0 0 0.5 0 0 0 0 1 0 0 0 0 1</matrix>
+        <instance_geometry url="#guangzhou-mesh" name="guangzhou">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="guangzhou-material" target="#guangzhou-material">
+                <bind_vertex_input semantic="UV 贴图" input_semantic="TEXCOORD" input_set="0"/>
+              </instance_material>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#Scene"/>
+  </scene>
+</COLLADA>

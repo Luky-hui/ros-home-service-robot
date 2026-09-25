@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<launch>
+    <node pkg="ira_laser_tools" name="laserscan_multi_merger" type="laserscan_multi_merger" output="screen">
+        <!--虚拟激光在什么坐标系下进行描述-->
+        <param name="destination_frame" value="fuse_lidar_link"/>
+        <param name="cloud_destination_topic" value="/bunny/lidar/merged/cloud"/>
+        <!--融合后生成的激光名-->
+        <param name="scan_destination_topic" value="/fuse_scan"/>
+        <!--需要融合的激光话题名-->
+        <param name="laserscan_topics" value ="/front_lidar/scan /rear_lidar/scan"/>
+
+        <param name="angle_min" value="-3.14"/>
+        <param name="angle_max" value="3.14"/>
+        <param name="angle_increment" value="0.0156"/>
+        <param name="scan_time" value="0.0333333"/>
+        <param name="range_min" value="0.05"/>
+        <param name="range_max" value="10.0"/>
+    </node>
+</launch>

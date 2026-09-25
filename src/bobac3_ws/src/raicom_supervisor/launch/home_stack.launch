@@ -1,0 +1,77 @@
+<launch>
+  <arg name="mission_type" default="auto"/>
+  <arg name="face_mode" default="any"/>
+  <arg name="voice_mode" default="topic"/>
+  <arg name="target_object" default=""/>
+  <arg name="require_fresh_commands" default="false"/>
+  <arg name="speak_unknown_fallback" default="true"/>
+  <arg name="semantic_reply_cooldown" default="6.0"/>
+  <arg name="face_camera_topic" default="/head_camera/image_raw"/>
+  <arg name="face_use_usb_camera" default="true"/>
+  <arg name="config_file" default="$(find home_service_mission)/config/home_waypoints.yaml"/>
+  <arg name="vision_config_file" default="$(find raicom_vision)/config/vision.yaml"/>
+  <arg name="enable_find_vision" default="false"/>
+  <arg name="vision_find_config_file" default="$(find raicom_vision)/config/vision_phone_bag_v5_find_service.yaml"/>
+  <arg name="find_vision_service" default="/raicom_vision/detect"/>
+  <arg name="enable_charge_ar" default="true"/>
+  <arg name="charge_ar_sim" default="true"/>
+  <arg name="charge_ar_image_topic" default="/bottom_camera/image_raw"/>
+  <arg name="charge_ar_camera_info_topic" default="/bottom_camera/camera_info"/>
+  <arg name="head_camera_watchdog" default="$(optenv RAICOM_HEAD_CAMERA_WATCHDOG false)"/>
+
+  <include file="$(find raicom_supervisor)/launch/supervisor.launch"/>
+  <include file="$(find local_voice_bridge)/launch/local_voice.launch">
+    <arg name="continuous_listen" value="true"/>
+    <arg name="execute_intents" value="false"/>
+  </include>
+  <group if="$(arg enable_charge_ar)">
+    <include file="$(find relative_move)/launch/relative_move.launch"/>
+    <include if="$(arg charge_ar_sim)" file="$(find ar_pose)/launch/ar_base_sim.launch">
+      <arg name="cam_image_topic" value="$(arg charge_ar_image_topic)"/>
+      <arg name="cam_info_topic" value="$(arg charge_ar_camera_info_topic)"/>
+    </include>
+    <include unless="$(arg charge_ar_sim)" file="$(find ar_pose)/launch/ar_base.launch"/>
+  </group>
+  <include if="$(eval arg('face_mode') == 'any')" file="$(find face_rec)/launch/face_detection.launch">
+    <arg name="camera_topic" value="$(arg face_camera_topic)"/>
+    <arg name="use_usb_camera" value="$(arg face_use_usb_camera)"/>
+  </include>
+  <node if="$(arg head_camera_watchdog)"
+        pkg="ar_pose"
+        type="watch_head_camera_device.sh"
+        name="head_camera_device_watchdog"
+        output="screen"
+        respawn="true"
+        respawn_delay="2.0"/>
+  <node pkg="raicom_supervisor"
+        type="cylinder_obstacle_guard.py"
+        name="cylinder_obstacle_guard"
+        output="screen"
+        respawn="true"
+        respawn_delay="0.5">
+    <param name="config_file" value="$(arg config_file)"/>
+  </node>
+  <node if="$(eval arg('face_mode') == 'sim')"
+        pkg="raicom_supervisor"
+        type="sim_face_trigger.py"
+        name="sim_face_trigger"
+        output="screen"/>
+  <include file="$(find raicom_vision)/launch/vision.launch">
+    <arg name="config_file" value="$(arg vision_config_file)"/>
+  </include>
+  <include if="$(arg enable_find_vision)" file="$(find raicom_vision)/launch/vision.launch">
+    <arg name="config_file" value="$(arg vision_find_config_file)"/>
+    <arg name="node_name" value="raicom_vision_find"/>
+  </include>
+  <include file="$(find home_service_mission)/launch/home_mission.launch">
+    <arg name="mission_type" value="$(arg mission_type)"/>
+    <arg name="face_mode" value="$(arg face_mode)"/>
+    <arg name="voice_mode" value="$(arg voice_mode)"/>
+    <arg name="target_object" value="$(arg target_object)"/>
+    <arg name="require_fresh_commands" value="$(arg require_fresh_commands)"/>
+    <arg name="speak_unknown_fallback" value="$(arg speak_unknown_fallback)"/>
+    <arg name="semantic_reply_cooldown" value="$(arg semantic_reply_cooldown)"/>
+    <arg name="config_file" value="$(arg config_file)"/>
+    <arg name="find_vision_service" value="$(arg find_vision_service)"/>
+  </include>
+</launch>

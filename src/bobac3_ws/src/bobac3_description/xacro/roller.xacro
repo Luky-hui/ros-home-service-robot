@@ -1,0 +1,58 @@
+<robot name="omni_roller" xmlns:xacro="http://wiki.ros.org/xacro">
+  <xacro:macro name="omni_roller" params="prefix parent index xyz rpy sim">
+    <link name="${prefix}/roller_${index}_link"> 
+      <inertial>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <mass
+          value="0.1" />
+        <inertia
+          ixx="2.5134E-07"
+          ixy="-2.4227E-12"
+          ixz="-4.6322E-23"
+          iyy="2.5129E-07"
+          iyz="-1.9852E-23"
+          izz="2.1543E-07" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://bobac3_description/meshes/roller_link.STL" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="0 0 0 1" />
+        </material>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh
+            filename="package://bobac3_description/meshes/roller_link.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <joint name="${prefix}/roller_${index}_joint" type="continuous" > 
+      <parent link="${prefix}/${parent}" />
+      <child link="${prefix}/roller_${index}_link" />
+      <origin xyz="${xyz}"
+        rpy="${rpy}" />
+      <axis
+        xyz="0 1 0" />
+    </joint>
+    <xacro:if value="${sim}">
+      <gazebo reference="${prefix}/roller_${index}_link">
+        <material>Gazebo/Black</material>
+        <mu1 value="5.0"/>
+        <mu2 value="6.0"/>
+        <kp value="100.0" />
+        <kd value="10.0" />
+      </gazebo>
+    </xacro:if>
+  </xacro:macro>
+
+</robot>

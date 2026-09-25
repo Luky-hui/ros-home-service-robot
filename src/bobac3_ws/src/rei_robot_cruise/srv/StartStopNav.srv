@@ -1,0 +1,4 @@
+string mode #'stop':stop the task, 'paush': paush the task, "start"
+int8 level #'0': action after current goal finished, '1':action immediately
+---
+bool isSuccess

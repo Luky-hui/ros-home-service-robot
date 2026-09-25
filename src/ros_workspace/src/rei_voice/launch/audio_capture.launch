@@ -1,0 +1,6 @@
+<launch>
+  <node name="audio_capture_node" pkg="reivoice_ai" type="voice_record_node" output="screen">
+    <param name="pcm_save_path" value="$(find reivoice_ai)/audio" />
+    <param name="audio_topic" value="/robot/audio/pcm" />
+  </node>
+</launch>

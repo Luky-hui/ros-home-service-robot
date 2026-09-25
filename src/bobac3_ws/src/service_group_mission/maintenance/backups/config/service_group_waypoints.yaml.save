@@ -1,0 +1,150 @@
+waypoints:
+  start:
+    frame_id: map
+    x: -0.290
+    y: -10.070
+    yaw: -0.008
+  shenzhen:
+    frame_id: map
+    x: 10.105
+    y: 0.991
+    nav_x: 1.120
+    nav_y: 1.066
+    nav_yaw: current
+    direct_fallback: true
+    max_direct_fallback_distance: 0.18
+    direct_accept_distance: 0.18
+    yaw: 3.125
+  shanghai:
+    frame_id: map
+    x: 1.114
+    y: 1.971
+    nav_x: 1.089
+    nav_y: 2.046
+    nav_yaw: current
+    direct_fallback: true
+    max_direct_fallback_distance: 0.18
+    direct_accept_distance: 0.18
+    yaw: 3.122
+  beijing:
+    frame_id: map
+    x: 2.531
+    y: 0.230
+    nav_x: 2.506
+    nav_y: 0.270
+    nav_yaw: current
+    direct_fallback: true
+    max_direct_fallback_distance: 0.18
+    direct_accept_distance: 0.18
+    yaw: 3.098
+  guangzhou:
+    frame_id: map
+    x: 2.421
+    y: 1.085
+    nav_yaw: current
+    direct_fallback: true
+    max_direct_fallback_distance: 0.18
+    direct_accept_distance: 0.18
+    yaw: 3.095
+  jilin:
+    frame_id: map
+    x: 2.315
+    y: 2.004
+    nav_yaw: current
+    direct_fallback: true
+    max_direct_fallback_distance: 0.18
+    direct_accept_distance: 0.18
+    yaw: 3.107
+  charge_approach:
+    frame_id: map
+    x: 0.415
+    y: 1.910
+    yaw: -1.574
+  charge:
+    frame_id: map
+    x: 0.415
+    y: 2.117
+    yaw: -1.574
+
+missions:
+  welcome:
+    target: shenzhen
+    return_target: start
+    trigger_phrase: "可以带我去参观一下深圳馆吗"
+    greeting: "你好，欢迎您的到来！有什么需要帮助的吗？"
+    accept: "好的，请跟我来。"
+    introduction: "深圳，是广东副省级市、经济特区。毗邻香港，经济发达，创新力强，有众多世界500强企业，是粤港澳大湾区中心城市。"
+    leaving: "这里就是深圳馆啦，我要继续回去工作啦！"
+  patrol:
+    trigger_phrase: "开始执行巡检任务"
+    admin_name: "管理员"
+    accept: "好的，进入巡检模式"
+    route: [jilin, guangzhou, beijing, shanghai, shenzhen]
+    charge_approach_target: charge_approach
+    charge_target: charge
+
+inspection:
+  event_source: vision
+  image_topic: /bottom_camera/image_raw
+  settle_time: 2.0
+  alarm_seconds: 4.0
+  scripted_events: {}
+
+arrival_observation:
+  enabled: true
+  speech: "到达点位"
+  pause: 4.0
+
+precision_parking:
+  enabled: true
+  default:
+    xy_tolerance: 0.025
+    yaw_tolerance: 0.05
+    timeout: 12.0
+    rate: 20.0
+    stable_cycles: 10
+    kp_xy: 0.7
+    kp_yaw: 0.9
+    max_linear: 0.05
+    max_angular: 0.12
+  charge:
+    xy_tolerance: 0.020
+    yaw_tolerance: 0.025
+    timeout: 25.0
+    stable_cycles: 15
+    kp_xy: 0.45
+    kp_yaw: 0.7
+    max_linear: 0.025
+    max_angular: 0.08
+  shenzhen:
+    timeout: 30.0
+    max_angular: 0.22
+  shanghai:
+    timeout: 30.0
+    max_angular: 0.22
+  beijing:
+    xy_tolerance: 0.060
+    timeout: 30.0
+    stable_cycles: 4
+    max_angular: 0.22
+  guangzhou:
+    timeout: 30.0
+    max_angular: 0.22
+  jilin:
+    timeout: 30.0
+    max_angular: 0.22
+
+exit_after_parking:
+  enabled: true
+  venues: [jilin, guangzhou, beijing, shanghai, shenzhen]
+  reverse_speed: -0.06
+  duration: 4.5
+
+docking:
+  enabled: true
+  reverse_speed: -0.025
+  timeout: 18.0
+  y_tolerance: 0.025
+  yaw_tolerance: 0.035
+  kp_yaw: 0.6
+  max_angular: 0.06

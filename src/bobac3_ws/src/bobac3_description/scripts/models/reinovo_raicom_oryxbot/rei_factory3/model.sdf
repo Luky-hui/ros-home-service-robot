@@ -1,0 +1,15 @@
+<?xml version='1.0'?>
+<sdf version='1.7'>
+  <model name='rei_factory3'>
+    <link name='link_0'>
+      <visual name='visual'>
+        
+        <geometry>
+          <mesh>
+            <uri>model://reinovo_raicom_oryxbot/rei_factory3/meshes/factory3.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+  </model>
+</sdf>

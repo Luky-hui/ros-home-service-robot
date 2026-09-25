@@ -1,0 +1,20 @@
+<launch>
+  <arg name="open_nav_rviz" default="true"/>
+  <arg name="gazebo_gui" default="true"/>
+  <arg name="map_file_name" default="reicom"/>
+  <arg name="face_mode" default="skip"/>
+  <arg name="voice_mode" default="skip"/>
+  <arg name="test_all_venues" default="false"/>
+
+  <include file="$(find bobac3_navigation)/launch/demo_nav_2d.launch">
+    <arg name="open_nav_rviz" value="$(arg open_nav_rviz)"/>
+    <arg name="gazebo_gui" value="$(arg gazebo_gui)"/>
+    <arg name="map_file_name" value="$(arg map_file_name)"/>
+  </include>
+
+  <include file="$(find service_group_mission)/launch/welcome_mission.launch">
+    <arg name="face_mode" value="$(arg face_mode)"/>
+    <arg name="voice_mode" value="$(arg voice_mode)"/>
+    <arg name="test_all_venues" value="$(arg test_all_venues)"/>
+  </include>
+</launch>

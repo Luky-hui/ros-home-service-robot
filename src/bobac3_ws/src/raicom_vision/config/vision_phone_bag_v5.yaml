@@ -1,0 +1,29 @@
+model_path: /home/robot/ros_workspace/models/phone_bag_v6_combined/phone_bag_yolo11n_v6_combined_best.onnx
+default_image_topic: /top_camera/image_raw
+service_name: /raicom_vision/detect
+annotated_topic: /raicom_vision/annotated
+detections_topic: /raicom_vision/detections
+image_timeout: 5.0
+image_size: 512
+iou: 0.45
+default_confidence: 0.25
+minimum_area_ratio: 0.005
+classes:
+  - phone
+  - bag
+label_aliases:
+  cell phone: phone
+  smartphone: phone
+  手机: phone
+  智能手机: phone
+  backpack: bag
+  bag: bag
+  书包: bag
+  背包: bag
+template_match:
+  enabled: false
+  directory: /home/robot/ros_workspace/models/home_food_templates
+  threshold: 0.75
+  scales: [1.0]
+  labels: []
+debug_image_directory: /tmp/raicom_vision_debug

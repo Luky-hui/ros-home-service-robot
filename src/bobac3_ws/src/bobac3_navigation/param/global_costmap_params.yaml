@@ -1,0 +1,14 @@
+global_costmap:
+  global_frame: map
+  robot_base_frame: base_footprint
+  update_frequency: 1.0
+  publish_frequency: 1.0
+  transform_tolerance: 0.5
+  # inflation_layer:
+  #   enabled: true
+  #   cost_scaling_factor:  5.0  # exponential rate at which the obstacle cost drops off (default: 10)
+  #   inflation_radius:     0.3  # max. distance from an obstacle at which costs are incurred for planning paths.
+  plugins:
+    - {name: static_layer,            type: "costmap_2d::StaticLayer"}
+    - {name: virtual_wall_layer,     type: "costmap_2d::StaticLayer"}
+    - {name: inflation_layer,  type: "costmap_2d::InflationLayer"}

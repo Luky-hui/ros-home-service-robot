@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="disinfection_kit">
+  <xacro:macro name="disinfection_kit" params="parent xyz rpy sim">
+    <joint name="extra_kit_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="disinfection_kit_link"/>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+      <axis xyz="0 0 0"/>
+    </joint>
+    <link name="disinfection_kit_link">
+      <inertial>
+        <origin
+          xyz="-0.00067 5.0E-05 0.266168"
+          rpy="0 0 0" />
+        <mass
+          value="0.02" />
+        <inertia
+          ixx="0.865488032374938"
+          ixy="-2.39312663522102E-05"
+          ixz="0.00307581812426291"
+          iyy="0.85595226561051"
+          iyz="-6.44925941683455E-05"
+          izz="0.383291349810178" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://bobac3_description/meshes/disinfection_kit_link.STL" />
+        </geometry>
+        <material>
+          <color rgba="1 1 1 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://bobac3_description/meshes/disinfection_kit_link.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <link name="top_camera_link">
+      <inertial>
+        <origin
+          xyz="-0.01444 0 -0.01559"
+          rpy="0 0 0" />
+        <mass
+          value="0.001" />
+        <inertia
+          ixx="8.4671940619891E-05"
+          ixy="-5.90281651973133E-22"
+          ixz="1.44257463260299E-06"
+          iyy="5.82306984916294E-05"
+          iyz="-7.34731515763E-21"
+          izz="3.74999098547234E-05" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://bobac3_description/meshes/top_camera_link.STL" />
+        </geometry>
+        <material>
+          <color rgba="0.5 0.5 0.5 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://bobac3_disinfection_kit/meshes/top_camera_link.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <joint name="top_camera_joint" type="fixed">
+      <origin
+        xyz="0.1307 0 0.5591"
+        rpy="0 -0.785398 0" />
+      <parent
+        link="disinfection_kit_link" />
+      <child
+        link="top_camera_link" />
+      <axis
+        xyz="0 0 0" />
+    </joint>
+    <xacro:if value="${sim}">
+      <gazebo reference="disinfection_kit_link">
+        <material>Gazebo/GreyGradientSky</material>
+      </gazebo>
+      <gazebo reference="top_camera_link">
+        <material>Gazebo/FlatBlack</material>
+      </gazebo>
+    </xacro:if>
+  </xacro:macro>
+</robot>

@@ -1,0 +1,9 @@
+<launch>
+    <arg name="map_type" default="gmapping" doc="gmapping,cartographer"/>
+    <arg name="map_file" default="map"/>
+    <arg name="map_directory" default="$(env MAP_DIRECTORY)"/>
+    <include file="$(find map_manager)/launch/$(arg map_type)_save.launch">
+        <arg name="map_filename" value="$(arg map_file)"/>
+        <arg name="map_directory" value="$(arg map_directory)"/>
+    </include>
+</launch>

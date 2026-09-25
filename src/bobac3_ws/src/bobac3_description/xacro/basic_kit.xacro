@@ -1,0 +1,214 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="basic_kit">
+  <xacro:macro name="basic_kit" params="parent sim laser_type">
+    <joint name="extra_kit_joint" type="fixed">
+      <parent link="${parent}" />
+      <child link="basic_kit_link" />
+      <xacro:if value="${laser_type == 'CSPC'}">
+        <origin xyz="-0.199 0 -0.02" rpy="0 0 3.14159" />
+      </xacro:if>
+      <xacro:unless value="${laser_type == 'CSPC'}">
+        <origin xyz="-0.034 0 0" rpy="0 0 0" />
+      </xacro:unless>
+      <axis xyz="0 0 0" />
+    </joint>
+    <xacro:if value="${laser_type == 'CSPC'}">
+      <link
+        name="basic_kit_link">
+        <inertial>
+          <origin
+            xyz="-0.0911672576716816 -0.00375101667946967 0.327523997489668"
+            rpy="0 0 0" />
+          <mass
+            value="1.45911195846713" />
+          <inertia
+            ixx="0.0111746368285295"
+            ixy="6.02134621630998E-06"
+            ixz="-0.00136442928293414"
+            iyy="0.00566215613507705"
+            iyz="1.11054482788563E-05"
+            izz="0.0092111197679973" />
+        </inertial>
+        <visual>
+          <origin
+            xyz="0 0 0"
+            rpy="0 0 0" />
+          <geometry>
+            <mesh
+              filename="package://bobac3_description/meshes/basic_kit_link_cspc.STL" />
+          </geometry>
+          <material
+            name="">
+            <color
+              rgba="1 1 1 1" />
+          </material>
+        </visual>
+        <collision>
+          <origin
+            xyz="0 0 0"
+            rpy="0 0 0" />
+          <geometry>
+            <mesh
+              filename="package://bobac3_description/meshes/basic_kit_link_cspc.STL" />
+          </geometry>
+        </collision>
+      </link>
+    </xacro:if>
+    <xacro:unless value="${laser_type == 'CSPC'}">
+      <link name="basic_kit_link">
+        <inertial>
+          <origin
+            xyz="0.063843 0.001458 0.284233"
+            rpy="0 0 0" />
+          <mass
+            value="1.44666566726349" />
+          <inertia
+            ixx="0.0142506995251501"
+            ixy="-2.97587772816469E-07"
+            ixz="0.000982982938097122"
+            iyy="0.00748136009628222"
+            iyz="-1.45498390881542E-05"
+            izz="0.00855600296958952" />
+        </inertial>
+        <visual>
+          <origin
+            xyz="0 0 0"
+            rpy="0 0 0" />
+          <geometry>
+            <mesh
+              filename="package://bobac3_description/meshes/basic_kit_link.STL" />
+          </geometry>
+          <material
+            name="">
+            <color
+              rgba="1 1 1 1" />
+          </material>
+        </visual>
+        <collision>
+          <origin
+            xyz="0 0 0"
+            rpy="0 0 0" />
+          <geometry>
+            <mesh
+              filename="package://bobac3_description/meshes/basic_kit_link.STL" />
+          </geometry>
+        </collision>
+      </link>
+    </xacro:unless>
+    <xacro:if value="${laser_type == 'CSPC'}">
+      <link
+        name="top_camera_link">
+        <inertial>
+          <origin
+            xyz="-0.0144410472853577 3.50221192592643E-07 -0.0155879253099328"
+            rpy="0 0 0" />
+          <mass
+            value="0.0930702512999254" />
+          <inertia
+            ixx="8.46696104375507E-05"
+            ixy="1.7202977510131E-11"
+            ixz="1.4425416685427E-06"
+            iyy="5.8230348276419E-05"
+            iyz="-1.00759165191464E-10"
+            izz="3.74977551477733E-05" />
+        </inertial>
+        <visual>
+          <origin
+            xyz="0 0 0"
+            rpy="0 0 0" />
+          <geometry>
+            <mesh
+              filename="package://bobac3_description/meshes/top_camera_link.STL" />
+          </geometry>
+          <material
+            name="">
+            <color
+              rgba="1 1 1 1" />
+          </material>
+        </visual>
+        <collision>
+          <origin
+            xyz="0 0 0"
+            rpy="0 0 0" />
+          <geometry>
+            <mesh
+              filename="package://bobac3_description/meshes/top_camera_link.STL" />
+          </geometry>
+        </collision>
+      </link>
+    </xacro:if>
+    <xacro:unless value="${laser_type == 'CSPC'}">
+      <link name="top_camera_link">
+        <inertial>
+          <origin
+            xyz="-0.01444 0.0 -0.0155877"
+            rpy="0 0 0" />
+          <mass
+            value="0.0930723033732641" />
+          <inertia
+            ixx="8.46719406198911E-05"
+            ixy="1.72756831136607E-21"
+            ixz="1.44257463259852E-06"
+            iyy="5.82306984916293E-05"
+            iyz="8.09942701300137E-21"
+            izz="3.7499909854723E-05" />
+        </inertial>
+        <visual>
+          <origin
+            xyz="0 0 0"
+            rpy="0 0 0" />
+          <geometry>
+            <mesh
+              filename="package://bobac3_description/meshes/top_camera_link.STL" />
+          </geometry>
+          <material
+            name="">
+            <color
+              rgba="0.5 0.5 0.5 1" />
+          </material>
+        </visual>
+        <collision>
+          <origin
+            xyz="0 0 0"
+            rpy="0 0 0" />
+          <geometry>
+            <mesh
+              filename="package://bobac3_description/meshes/top_camera_link.STL" />
+          </geometry>
+        </collision>
+      </link>
+    </xacro:unless>
+    <joint name="top_camera_joint" type="fixed">
+      <xacro:if value="${laser_type == 'CSPC'}">
+        <origin
+          xyz="-0.016389 0 0.45762"
+          rpy="0 -0.7854 3.1416" />
+      </xacro:if>
+      <xacro:unless value="${laser_type == 'CSPC'}">
+        <origin
+          xyz="0.039197 0 0.446233"
+          rpy="0 -0.314159 0" />
+      </xacro:unless>
+      <parent
+        link="basic_kit_link" />
+      <child
+        link="top_camera_link" />
+      <axis
+        xyz="0 0 0" />
+      </joint>
+    <link name="top_camera_optical_link"/>
+    <joint name="top_camera_optical_joint" type="fixed">
+      <parent link="top_camera_link"/>
+      <child link="top_camera_optical_link"/>
+      <origin xyz="0 0 0" rpy="0 0.78 0" />
+    </joint>
+    <xacro:if value="${sim}">
+      <gazebo reference="basic_kit_link">
+        <material>Gazebo/White</material>
+      </gazebo>
+      <gazebo reference="top_camera_link">
+        <material>Gazebo/DarkGrey</material>
+      </gazebo>
+    </xacro:if>
+  </xacro:macro>
+</robot>

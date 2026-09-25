@@ -1,0 +1,14 @@
+<launch>
+    <!-- 摄像头节点 -->
+    <include file="$(find ar_pose)/launch/usbcam_head.launch"/>
+    <node name="face_rec_service" pkg="face_rec" type="face_verification.py" output="screen">
+        <!-- 相机话题 -->
+        <param name="camera_topic" value="/head_camera/image_raw"/>
+        <!-- 人脸数据库目录 -->
+        <param name="face_data" value="$(find face_rec)/face_data/"/>
+        <!-- 相机编码 -->
+        <param name="image_encoding" value="rgb8"/>
+        <!--识别容差-->
+        <param name="tolerance" value="0.4"/>
+    </node>
+</launch>

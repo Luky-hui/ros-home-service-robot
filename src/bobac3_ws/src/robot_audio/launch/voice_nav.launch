@@ -1,0 +1,3 @@
+<launch>
+	<node pkg="robot_audio" type="voice_nav_node" name="voice_nav" output="screen"/>
+</launch>

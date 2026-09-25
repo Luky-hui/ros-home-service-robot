@@ -1,0 +1,411 @@
+waypoints:
+  start:
+    frame_id: map
+    x: -0.0034
+    y: -0.0037
+    yaw: 0.0034
+  corridor:
+    frame_id: map
+    x: 1.2519
+    y: 2.1502
+    yaw: -0.0135
+    xy_tolerance: 0.06
+  中转点1:
+    frame_id: map
+    x: 0.2834
+    y: 2.25
+    yaw: 0.0899
+    xy_tolerance: 0.1
+    ignore_yaw: true
+  中转点2:
+    frame_id: map
+    x: 2.2118
+    y: 2.25
+    yaw: 0.0627
+    xy_tolerance: 0.1
+    ignore_yaw: true
+  restaurant:
+    frame_id: map
+    x: 2.2627
+    y: 1.0762
+    yaw: 0.0244
+    xy_tolerance: 0.06
+  kitchen:
+    frame_id: map
+    x: 1.2545
+    y: 1.0604
+    yaw: 1.5618
+    xy_tolerance: 0.06
+  living_room:
+    frame_id: map
+    x: 1.2414
+    y: 0.0232
+    yaw: -1.4939
+    xy_tolerance: 0.06
+  bedroom:
+    frame_id: map
+    x: 2.2222
+    y: 0.0555
+    yaw: -1.5445
+    xy_tolerance: 0.06
+navigation:
+  action_server: /move_base
+  fallback_action_server: /move_base_node
+  server_wait: 240.0
+  goal_timeout: 180.0
+  return_to_start: true
+  corridor_route:
+  - 中转点1
+  - corridor
+  return_route:
+  - living_room
+  - kitchen
+  - restaurant
+  - 中转点2
+  - corridor
+  - 中转点1
+  - start
+  return_xy_tolerance: 0.05
+  return_ignore_yaw: true
+  corridor_position_only_navigation: false
+  accept_aborted_within_goal_tolerance: true
+  near_goal_xy_tolerance: 0.1
+  map_frame: map
+  base_frame: base_footprint
+  position_only_yaw_goal_tolerance: 3.141592653589793
+  goal_xy_tolerance: 0.01
+  goal_yaw_tolerance: 3.141592653589793
+  dwa_reconfigure_service: /move_base_node/DWAPlannerROS/set_parameters
+  dwa_yaw_goal_tolerance_param: /move_base_node/DWAPlannerROS/yaw_goal_tolerance
+  initial_open_loop_escape:
+    enabled: false
+    linear_x: 0.12
+    linear_y: 0.0
+    angular_z: 0.0
+    duration: 7.5
+    rate: 10.0
+  final_open_loop_return:
+    enabled: false
+    linear_x: -0.12
+    linear_y: 0.0
+    angular_z: 0.0
+    duration: 7.5
+    rate: 10.0
+  clear_costmaps_before_goal: true
+  clear_costmaps_service: /move_base_node/clear_costmaps
+  clear_costmaps_wait: 5.0
+  retry_on_abort: 1
+  retry_pause: 1.0
+forbidden_zones:
+  virtual_wall_file: /home/yuanbao/bobac3_ws/src/bobac3_navigation/maps/national_2026.json
+  map_topic: /virtual_wall_map
+  note: Forbidden zone disabled for task flow test; redraw before final scoring.
+  zones: []
+arrival_pause:
+  enabled: true
+  seconds: 5.0
+  waypoints:
+  - restaurant
+  - restaurant_center
+  - kitchen
+  - living_room
+  - bedroom
+  - corridor
+  - start
+  - charge
+  - start_exit
+interaction:
+  face_topic: /face_detection
+  command_topic: /service_group_mission/voice_command
+  intent_topic: /local_voice/intent
+  tts_service: /voice_tts
+  wake_prompt: 你好，需要帮助吗？
+  accept: 好的，请跟我来。
+guide:
+  position_only_navigation: true
+  trigger_phrases:
+  - 可以带我参观一下吗
+  - 带我参观一下
+  - 参观一下
+  interference_replies:
+  - phrases:
+    - 参观完了
+    - 不用参观了
+    - 先不参观
+    speech: 好的，需要参观时再告诉我。
+  route:
+  - restaurant
+  - kitchen
+  - living_room
+  - bedroom
+  introductions:
+    restaurant: 这里是餐厅，是用餐和交流的区域。
+    kitchen: 这里是厨房，是准备和烹饪食物的区域。
+    living_room: 这里是客厅，是休息和接待来访者的区域。
+    bedroom: 这里是卧室，是睡眠和休息的区域。
+    restaurant_center: 这里是餐厅，是用餐和交流的区域。
+  approach_routes:
+    restaurant:
+    - 中转点2
+assistant:
+  trigger_phrases:
+  - 给我推荐一下今天适合做什么菜
+  - 推荐一下今天适合做什么菜
+  - 去看看冰箱里有什么
+  - 看下还剩什么菜
+  target_waypoint: kitchen
+  approach_route:
+  - 中转点2
+  - waypoint: restaurant
+    xy_tolerance: 0.1
+    ignore_yaw: true
+    skip_pause: true
+  start_speech: 好的，我去看看冰箱里有什么。
+  no_food_speech: 没有识别到冰箱里的食材。
+  foods_prefix: 冰箱里有
+  recipe_template: 推荐做%s。%s
+  image_topic: /head_camera/image_raw
+  confidence: 0.1
+  sample_count: 3
+  sample_interval: 0.3
+  minimum_report_count: 3
+  maximum_report_count: 3
+  simulation_fallback:
+    enabled: false
+    fill_to_minimum: true
+    labels:
+    - 番茄
+    - 鸡蛋
+    - 青椒
+  food_labels:
+  - 上海青
+  - 土豆
+  - 猪肉
+  - 玉米
+  - 番茄
+  - 苹果
+  - 茄子
+  - 虾
+  - 豆腐
+  - 青椒
+  - 香蕉
+  - 鱼肉
+  - 鸡蛋
+  - 黄瓜
+  recipes:
+  - name: 番茄炒蛋配青椒
+    requires:
+    - 番茄
+    - 鸡蛋
+    - 青椒
+    method: 番茄切块，鸡蛋打散炒熟盛出，青椒切块，先炒番茄出汁，再倒入鸡蛋和青椒翻炒调味。
+  - name: 番茄炒蛋
+    requires:
+    - 番茄
+    - 鸡蛋
+    method: 番茄切块，鸡蛋打散炒熟盛出，再炒番茄出汁，倒回鸡蛋翻炒调味。
+  - name: 青椒炒肉
+    requires:
+    - 青椒
+    - 猪肉
+    method: 青椒切丝，猪肉切片腌制，先炒肉片，再放青椒炒熟并调味。
+  - name: 上海青豆腐汤
+    requires:
+    - 上海青
+    - 豆腐
+    method: 上海青洗净切段，豆腐切块，水开后加入豆腐和上海青煮熟调味。
+  - name: 黄瓜炒虾仁
+    requires:
+    - 黄瓜
+    - 虾
+    method: 虾仁腌制后炒至变色，加入黄瓜片快速翻炒并调味。
+  - name: 土豆烧肉
+    requires:
+    - 土豆
+    - 猪肉
+    method: 猪肉煸香后加入土豆块，加水焖熟并调味。
+  - name: 番茄豆腐
+    requires:
+    - 番茄
+    - 豆腐
+    method: 番茄炒出汤汁，加入豆腐块小火煮入味。
+  - name: 玉米炒肉末
+    requires:
+    - 玉米
+    - 猪肉
+    method: 玉米粒焯水，猪肉剁末炒香，加入玉米粒翻炒并调味。
+  - name: 红烧茄子
+    requires:
+    - 茄子
+    method: 茄子切块煎软，加入调味汁烧至入味。
+  - name: 清蒸鱼肉
+    requires:
+    - 鱼肉
+    method: 鱼肉处理干净后加葱姜蒸熟，淋上蒸鱼豉油。
+  - name: 清炒虾仁
+    requires:
+    - 虾
+    method: 虾仁腌制后快速滑炒，炒熟后调味。
+  - name: 水果拼盘
+    requires:
+    - 苹果
+    - 香蕉
+    method: 苹果和香蕉切块，摆盘后即可食用。
+find_object:
+  return_route:
+  - 中转点1
+  - start
+  image_topic: /berxel_base/color/image_raw
+  confidence: 0.5
+  sample_count: 3
+  sample_interval: 0.3
+  start_speech_template: 好的，我去找%s。
+  found_speech_template: 找到%s啦，在这里！
+  empty_speech: 这里什么都没有
+  other_prefix: 我看到了
+  not_found_speech_template: 没有找到%s。
+  trigger_phrases:
+    cell phone:
+    - 帮我找一下手机
+    - 找一下手机
+    - 找手机
+    backpack:
+    - 帮我找一下书包
+    - 找一下书包
+    - 找书包
+  route:
+  - waypoint: restaurant
+    ignore_yaw: true
+    align_yaw: true
+    align_yaw_tolerance: 0.17453292519943295
+    skip_pause: true
+    xy_tolerance: 0.06
+  - waypoint: kitchen
+    ignore_yaw: true
+    align_yaw: true
+    align_yaw_tolerance: 0.17453292519943295
+    skip_pause: true
+    xy_tolerance: 0.06
+  - waypoint: living_room
+    ignore_yaw: true
+    align_yaw: true
+    align_yaw_tolerance: 0.17453292519943295
+    skip_pause: true
+    xy_tolerance: 0.06
+  - waypoint: bedroom
+    ignore_yaw: true
+    align_yaw: true
+    align_yaw_tolerance: 0.17453292519943295
+    skip_pause: true
+    xy_tolerance: 0.06
+  - waypoint: corridor
+    ignore_yaw: true
+    align_yaw: true
+    align_yaw_tolerance: 0.17453292519943295
+    skip_pause: true
+    approach_route:
+    - waypoint: living_room
+      ignore_yaw: true
+      skip_pause: true
+      xy_tolerance: 0.1
+    - waypoint: kitchen
+      ignore_yaw: true
+      skip_pause: true
+      xy_tolerance: 0.1
+    - waypoint: restaurant
+      ignore_yaw: true
+      skip_pause: true
+      xy_tolerance: 0.1
+    - waypoint: 中转点2
+      ignore_yaw: true
+      skip_pause: true
+      xy_tolerance: 0.1
+    xy_tolerance: 0.06
+  labels:
+  - cell phone
+  - backpack
+  simulation_fallback:
+    enabled: false
+    room_results:
+      restaurant: []
+      kitchen: []
+      living_room:
+      - backpack
+      bedroom:
+      - cell phone
+      corridor: []
+finish:
+  trigger_phrases:
+  - 返回充电桩
+  - 去充电
+  - 开始充电
+  - 任务完成
+  pre_charge_target: start
+  charge_target: ''
+  start_speech: 准备返回充电桩。
+  complete_speech: 开始充电，任务完成。
+docking:
+  enabled: true
+  method: ar_pose
+  track_service: /track
+  ar_id: 0
+  goal_dist: 0.35
+  service_wait: 10.0
+  rotate_after_track: true
+  rotate_angle: 3.1415926
+  rotate_timeout: 20.0
+  rotate_speed: 0.2
+  yaw_tolerance: 0.035
+  stable_cycles: 8
+  reverse_after_rotate: true
+  reverse_distance: 0.45
+  reverse_speed: -0.035
+  reverse_timeout: 45.0
+  map_frame: map
+  base_frame: base_footprint
+  reverse_distance_from_marker: true
+  marker_topic: /base_camera/ar_pose_marker
+  marker_distance_axis: x
+  final_marker_distance: 0.1
+  reverse_distance_min: 0.0
+  reverse_distance_max: 0.7
+  reverse_distance_fallback: 0.25
+  pre_align_yaw: true
+  pre_align_target_yaw: -0.0018
+  pre_align_yaw_tolerance: 0.17453292519943295
+  pre_align_timeout: 20.0
+  pre_align_speed: 0.2
+  pre_align_stable_cycles: 6
+  direct_marker_docking: true
+  use_track_service: false
+  marker_lateral_align: true
+  marker_lateral_axis: y
+  marker_lateral_tolerance: 0.05
+  marker_lateral_kp: 0.4
+  marker_lateral_max_speed: 0.04
+  marker_align_timeout: 10.0
+  marker_align_stable_cycles: 6
+  marker_wait: 3.0
+  reverse_distance_offset: 0.09
+chinese_names:
+  restaurant: 餐厅
+  kitchen: 厨房
+  living_room: 客厅
+  bedroom: 卧室
+  corridor: 走廊
+  cell phone: 手机
+  backpack: 书包
+  上海青: 上海青
+  土豆: 土豆
+  猪肉: 猪肉
+  玉米: 玉米
+  番茄: 番茄
+  苹果: 苹果
+  茄子: 茄子
+  虾: 虾
+  豆腐: 豆腐
+  青椒: 青椒
+  香蕉: 香蕉
+  鱼肉: 鱼肉
+  鸡蛋: 鸡蛋
+  黄瓜: 黄瓜

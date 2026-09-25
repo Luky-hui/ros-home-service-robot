@@ -1,0 +1,24 @@
+<launch>
+    <group ns="rear_lidar">
+        <node pkg="cspc_lidar" type="cspc_lidar" name="rear_lidar" output="screen">
+            <param name="frame_id" type="string" value="rear_lidar_link"/>
+            <param name="port" type="string" value="/dev/rear_lidar"/>
+            <param name="baud_rate" type="int" value="230400"/>
+            <param name="version" type="int" value="4"/>
+            <param name="angle_min" type="double" value="75"/>
+            <param name="angle_max" type="double" value="285.0"/>
+        </node>
+    </group>
+
+    <group ns="front_lidar">
+        <node pkg="cspc_lidar" type="cspc_lidar" name="front_lidar" output="screen">
+            <param name="frame_id" type="string" value="front_lidar_link"/>
+            <param name="port" type="string" value="/dev/front_lidar"/>
+            <param name="baud_rate" type="int" value="230400"/>
+            <param name="version" type="int" value="4"/>
+            <param name="cut_angle_min" type="double" value="105"/>
+            <param name="cut_angle_max" type="double" value="255"/>
+        </node>
+    </group>
+    <include file="$(find rei_lidar_fuse)/launch/example_cs.launch" /> 
+</launch>

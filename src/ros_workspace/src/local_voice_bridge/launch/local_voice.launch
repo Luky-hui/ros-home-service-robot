@@ -1,0 +1,17 @@
+<launch>
+  <arg name="config_file" default="$(find local_voice_bridge)/config/voice_config.yaml"/>
+  <arg name="continuous_listen" default="true"/>
+  <arg name="execute_intents" default="true"/>
+  <arg name="pulse_source" default="$(optenv RAICOM_AUDIO_SOURCE alsa_input.usb-Generic_AB13X_USB_Audio_20230726905926-00.analog-stereo)"/>
+
+  <node pkg="local_voice_bridge"
+        type="local_voice_node.py"
+        name="local_voice_node"
+        output="screen">
+    <env name="PULSE_SOURCE"
+         value="$(arg pulse_source)"/>
+    <param name="config_file" value="$(arg config_file)"/>
+    <param name="continuous_listen" value="$(arg continuous_listen)"/>
+    <param name="execute_intents" value="$(arg execute_intents)"/>
+  </node>
+</launch>

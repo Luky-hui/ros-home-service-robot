@@ -1,0 +1,7 @@
+<launch>
+    <arg name="face_directory" default="$(env FACE_DIRECTORY)"/>
+    <node pkg="face_rec" type="encode_face.py" name="encode_face" output="screen">
+        <!-- 人脸数据库目录 -->
+        <param name="face_data" value="$(arg face_directory)"/>
+    </node>
+</launch>

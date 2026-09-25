@@ -1,0 +1,268 @@
+waypoints:
+  start:
+    frame_id: map
+    x: 0.070
+    y: -0.100
+    yaw: -0.008
+  shenzhen:
+    frame_id: map
+    x: 1.105
+    y: 1.091
+    nav_x: 1.120
+    nav_y: 1.091
+    nav_yaw: current
+    direct_fallback: true
+    max_direct_fallback_distance: 0.35
+    direct_accept_distance: 0.05
+    yaw: -0.017
+  shanghai:
+    frame_id: map
+    x: 1.114
+    y: 2.100
+    nav_x: 1.089
+    nav_y: 2.046
+    nav_yaw: current
+    direct_fallback: true
+    max_direct_fallback_distance: 0.35
+    direct_accept_distance: 0.05
+    yaw: -0.000
+  beijing:
+    frame_id: map
+    x: 2.571
+    y: 0.090
+    nav_x: 2.506
+    nav_y: 0.270
+    nav_yaw: current
+    direct_fallback: true
+    max_direct_fallback_distance: 0.45
+    direct_accept_distance: 0.03
+    yaw: -0.000
+  guangzhou:
+    frame_id: map
+    x: 2.551
+    y: 1.091
+    nav_yaw: current
+    direct_fallback: true
+    max_direct_fallback_distance: 0.35
+    direct_accept_distance: 0.05
+    yaw: -0.000
+  jilin:
+    frame_id: map
+    x: 2.551
+    y: 2.114
+    nav_yaw: current
+    direct_fallback: true
+    max_direct_fallback_distance: 0.35
+    direct_accept_distance: 0.05
+    yaw: -0.000
+  charge_approach:
+    frame_id: map
+    x: 0.355
+    y: 1.650
+    yaw: 1.568
+  charge:
+    frame_id: map
+    x: 0.344
+    y: 2.043
+    yaw: -1.574
+
+missions:
+  welcome:
+    target: shenzhen
+    return_target: start
+    trigger_phrase: "馆"
+    greeting: "你好，欢迎您的到来！有什么需要帮助的吗？"
+    accept: "好的，请跟我来。"
+    introduction: "深圳，是广东副省级市、经济特区。毗邻香港，经济发达，创新力强，有众多世界500强企业，是粤港澳大湾区中心城市。"
+    leaving: "这里就是深圳馆啦，我要继续回去工作啦！"
+    introductions:
+      shenzhen: "深圳馆传承传统工艺，挖掘本土技艺，保护岭南地区珍贵非物质文化遗产。"
+      guangzhou: "广州馆彰显羊城古韵，传承岭南文脉，展现千年商都传承发展新风貌。"
+      beijing: "北京馆发展会展经济，汇聚八方宾客，提升首都国际交流知名度。"
+      shanghai: "上海馆深化文明创建，提升市民素养，树立国际化都市文明新标杆。"
+      jilin: "吉林馆打造乡土雕塑，融入林海元素，提升北方城镇公共艺术整体品位。"
+    leavings:
+      shenzhen: "这里就是深圳馆啦，我要继续回去工作啦！"
+      guangzhou: "这里就是广州馆啦，我要继续回去工作啦！"
+      beijing: "这里就是北京馆啦，我要继续回去工作啦！"
+      shanghai: "这里就是上海馆啦，我要继续回去工作啦！"
+      jilin: "这里就是吉林馆啦，我要继续回去工作啦！"
+  patrol:
+    trigger_phrase: "巡检"
+    admin_name: "operator"
+    accept: "好的，进入巡检模式"
+    route: [beijing, guangzhou, jilin, shanghai, shenzhen]
+    charge_approach_target: charge_approach
+    charge_target: charge
+
+inspection:
+  prepare_visible_event: false
+  event_source: vision
+  image_topic: /berxel_base/color/image_raw
+  settle_time: 1.0
+  alarm_seconds: 4.0
+  sample_count: 2
+  sample_interval: 0.15
+  fire_confidence: 0.30
+  extinguisher_confidence: 0.80
+  texture_diff_enabled: false
+  texture_baseline_dir: /home/robot/bobac3_ws/src/service_group_mission/assets/service_baselines
+  texture_current_template: /home/robot/.gazebo/models/rei_2025raicom/{venue}/meshes/{venue}.png
+  texture_diff_pixel_threshold: 35
+  fire_diff_roi: [0.12, 0.52, 0.50, 0.98]
+  extinguisher_diff_roi: [0.62, 0.48, 0.92, 0.98]
+  fire_diff_ratio_threshold: 0.015
+  extinguisher_diff_ratio_threshold: 0.010
+  template_match_enabled: false
+  template_fire_path: /home/robot/.gazebo/models/rei_2025raicom/fire_hazard/meshes/fire_hazard.png
+  template_extinguisher_path: /home/robot/.gazebo/models/rei_2025raicom/fire_extinguisher/meshes/fire_extinguisher.png
+  template_threshold: 0.42
+  template_scales: [0.12, 0.16, 0.20, 0.25, 0.32, 0.40, 0.50]
+  color_event_enabled: false
+  fire_orange_ratio_threshold: 0.035
+  extinguisher_red_ratio_threshold: 0.006
+  gazebo_event_fallback: true
+  scripted_events: {}
+
+inspection_pose_adjustment:
+  enabled: false
+  venues: [beijing, guangzhou, jilin, shanghai, shenzhen]
+  speech: "到达点位"
+  reverse_distance: 0.10
+  reverse_speed: -0.05
+  settle_after_reverse: 0.3
+
+arrival_observation:
+  enabled: false
+  speech: "到达点位"
+  pause: 0.0
+
+navigation_failure_recovery:
+  enabled: true
+  retry_count: 1
+  retry_nav_timeout: 45.0
+  motions:
+    - linear_x: 0.05
+      linear_y: 0.0
+      angular_z: 0.0
+      duration: 2.0
+
+precision_parking:
+  enabled: true
+  default:
+    xy_tolerance: 0.015
+    yaw_tolerance: 0.035
+    timeout: 18.0
+    rate: 20.0
+    stable_cycles: 8
+    kp_xy: 0.7
+    kp_yaw: 0.9
+    max_linear: 0.055
+    max_angular: 0.18
+  start:
+    xy_tolerance: 0.020
+    timeout: 30.0
+    stable_cycles: 8
+  charge:
+    xy_tolerance: 0.020
+    yaw_tolerance: 0.025
+    timeout: 25.0
+    stable_cycles: 8
+    kp_xy: 0.55
+    kp_yaw: 0.7
+    max_linear: 0.035
+    max_angular: 0.10
+  charge_approach:
+    xy_tolerance: 0.020
+    timeout: 35.0
+    stable_cycles: 8
+    max_linear: 0.045
+    max_angular: 0.14
+  shenzhen:
+    xy_tolerance: 0.020
+    timeout: 30.0
+    stable_cycles: 5
+    max_angular: 0.30
+  shanghai:
+    timeout: 30.0
+    max_angular: 0.30
+  beijing:
+    xy_tolerance: 0.020
+    timeout: 30.0
+    stable_cycles: 15
+    max_angular: 0.30
+  guangzhou:
+    timeout: 30.0
+    max_angular: 0.30
+  jilin:
+    timeout: 30.0
+    max_angular: 0.30
+
+exit_after_parking:
+  enabled: true
+  venues: [jilin, guangzhou, beijing, shanghai, shenzhen]
+  reverse_speed: -0.08
+  duration: 3.0
+
+docking:
+  enabled: true
+  method: marker
+  reverse_speed: -0.035
+  timeout: 20.0
+  y_tolerance: 0.010
+  yaw_tolerance: 0.035
+  kp_yaw: 0.6
+  max_angular: 0.08
+  marker_enabled: true
+  marker_image_topic: /berxel_base/color/image_raw
+  marker_template_dir: /home/robot/ros_workspace/models/charge_markers
+  marker_primary_templates: [MarkerData_0.png]
+  marker_use_pile_panel: true
+  marker_panel_saturation_max: 70
+  marker_panel_value_min: 85
+  marker_panel_min_area: 600.0
+  marker_panel_min_y_ratio: 0.25
+  marker_template_widths: [20, 24, 30, 36, 44, 52, 64, 80, 96, 120, 150, 180]
+  marker_min_score: 0.42
+  marker_min_roi_std: 18.0
+  marker_dark_threshold: 50
+  marker_light_threshold: 80
+  marker_min_width_px: 20
+  marker_max_width_px: 220
+  marker_min_black_ratio: 0.25
+  marker_min_white_ratio: 0.03
+  marker_center_tolerance_px: 20
+  marker_align_timeout: 20.0
+  marker_align_rate: 10.0
+  marker_align_stable_cycles: 6
+  marker_lateral_kp: 0.12
+  marker_min_lateral: 0.006
+  marker_max_lateral: 0.060
+  marker_rotate_speed: 0.50
+  marker_rotate_timeout: 20.0
+  marker_yaw_tolerance: 0.025
+  charge_contact_pose_enabled: true
+  charge_contact_link: reinovo_raicom_final::link_0
+  charge_robot_base_link: bobac3_serverbot::base_footprint
+  charge_port_offset_x: -0.160
+  charge_port_offset_y: 0.000
+  charge_contact_target_offset_x: 0.000
+  charge_contact_target_offset_y: 0.000
+  charge_contact_xy_tolerance: 0.010
+  charge_contact_yaw_tolerance: 0.025
+  charge_contact_timeout: 25.0
+  charge_contact_rate: 20.0
+  charge_contact_stable_cycles: 8
+  charge_contact_kp_xy: 0.8
+  charge_contact_kp_yaw: 0.8
+  charge_contact_max_linear: 0.035
+  charge_contact_max_angular: 0.10
+  marker_distance_control_enabled: true
+  marker_distance_model_name: small_marker_charge_pile
+  marker_target_model_distance: 0.385
+  marker_distance_tolerance: 0.010
+  marker_distance_timeout: 25.0
+  marker_reverse_distance: 0.451
+  marker_reverse_speed: -0.035
+  marker_reverse_timeout: 25.0
+  marker_fallback_to_map: true

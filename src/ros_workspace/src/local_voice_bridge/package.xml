@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>local_voice_bridge</name>
+  <version>1.0.0</version>
+  <description>Token-free Chinese ASR, intent parsing, TTS, and REI interface compatibility for bobac3.</description>
+  <maintainer email="maintainer@example.com">robot_user</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>rei_voice</depend>
+  <depend>robot_audio</depend>
+  <depend>service_group_mission</depend>
+  <depend>rospy</depend>
+  <depend>std_msgs</depend>
+  <depend>std_srvs</depend>
+</package>

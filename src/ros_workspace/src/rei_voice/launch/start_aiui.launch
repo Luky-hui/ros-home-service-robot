@@ -1,0 +1,3 @@
+<launch>
+    <node pkg="rei_voice" name="rei_voice_node" type="rei_voice_node" output="screen"/>
+</launch>

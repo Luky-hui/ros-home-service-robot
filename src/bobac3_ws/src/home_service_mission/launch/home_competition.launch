@@ -1,0 +1,14 @@
+<launch>
+  <arg name="mission_type" default="auto"/>
+  <arg name="face_mode" default="any"/>
+  <arg name="voice_mode" default="topic"/>
+  <arg name="target_object" default=""/>
+
+  <include file="$(find raicom_vision)/launch/vision.launch"/>
+  <include file="$(find home_service_mission)/launch/home_mission.launch">
+    <arg name="mission_type" value="$(arg mission_type)"/>
+    <arg name="face_mode" value="$(arg face_mode)"/>
+    <arg name="voice_mode" value="$(arg voice_mode)"/>
+    <arg name="target_object" value="$(arg target_object)"/>
+  </include>
+</launch>

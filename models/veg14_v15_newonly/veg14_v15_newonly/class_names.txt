@@ -1,0 +1,14 @@
+0 1-shanghaiqing
+1 2-corn
+2 3-shrimp
+3 4-cucumber
+4 5-pork
+5 6-eggplant
+6 7-potato
+7 8-egg
+8 9-tomato
+9 10-fish
+10 11-green_pepper
+11 12-tofu
+12 13-banana
+13 14-apple

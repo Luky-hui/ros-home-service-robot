@@ -1,0 +1,49 @@
+model_path: /home/robot/ros_workspace/models/veg14_v15_newonly/veg14_v15_newonly_best.onnx
+extra_model_paths:
+- /home/robot/ros_workspace/models/raicom_food_ensemble/best.pt
+default_image_topic: /head_camera/image_raw
+service_name: /raicom_vision/detect
+annotated_topic: /raicom_vision/annotated
+detections_topic: /raicom_vision/detections
+image_timeout: 5.0
+image_size: 512
+iou: 0.45
+default_confidence: 0.5
+classes:
+- 1-shanghaiqing
+- 2-corn
+- 3-shrimp
+- 4-cucumber
+- 5-pork
+- 6-eggplant
+- 7-potato
+- 8-egg
+- 9-tomato
+- 10-fish
+- 11-green_pepper
+- 12-tofu
+- 13-banana
+- 14-apple
+label_aliases:
+  上海青: 1-shanghaiqing
+  玉米: 2-corn
+  虾: 3-shrimp
+  黄瓜: 4-cucumber
+  猪肉: 5-pork
+  茄子: 6-eggplant
+  土豆: 7-potato
+  鸡蛋: 8-egg
+  番茄: 9-tomato
+  鱼肉: 10-fish
+  青椒: 11-green_pepper
+  豆腐: 12-tofu
+  香蕉: 13-banana
+  苹果: 14-apple
+template_match:
+  enabled: false
+  directory: /home/robot/ros_workspace/models/home_food_templates
+  threshold: 0.75
+  scales:
+  - 1.0
+  labels: []
+debug_image_directory: /tmp/raicom_vision_debug

@@ -1,0 +1,23 @@
+<launch>
+
+  <!--ar码的边长，单位cm-->
+	<arg name="marker_size" default="3" />
+	<!--摄像头名-->
+  
+  <!-- 打开usb_cam_with_calibration launch文件 -->
+  <include file="$(find ar_pose)/launch/usbcam_hand.launch"/>
+  <node pkg="tf2_ros" type="static_transform_publisher" name="arm_to_cam"
+		args="0.068 0.004 0.042 1.57079632679 0 3.1415926
+	end hand_camera_link" />
+  <group ns="hand_camera">
+	  <!--打开individualMarkersNoKinect节点并映射为ar_track_alvar节点-->
+	  <node name="ar_track_alvar" pkg="ar_track_alvar" type="individualMarkersNoKinect">
+		  <param name="marker_size"           type="double" value="$(arg marker_size)" />
+		  <param name="max_new_marker_error"  type="double" value="0.08" />
+		  <param name="max_track_error"       type="double" value="0.2" />
+		  <param name="output_frame"          type="string" value="hand_camera_link" />
+		  <remap from="camera_image"  to="image_raw" />
+		  <remap from="camera_info"   to="camera_info" />
+	  </node>
+  </group>
+</launch>

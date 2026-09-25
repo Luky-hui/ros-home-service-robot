@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="normal_wheel">
+  <xacro:macro name="normal_wheel" params="prefix parent xyz rpy">
+    <link name="${prefix}/wheel_link">
+      <inertial>
+        <mass value="0.10"/>
+        <inertia ixx="7.6e-5" ixy="0.0" ixz="0.0" iyy="7.6e-5" iyz="0.0" izz="0.000125"/>
+      </inertial>
+      <visual>
+        <geometry>
+          <cylinder radius="0.045" length="0.02"/>
+        </geometry>
+        <material name="Grey">
+          <color rgba="0.3 0.3 0.3 1.0"/>
+        </material>
+      </visual>
+      <collision>
+        <geometry>
+          <cylinder radius="0.045" length="0.02"/>
+        </geometry>
+      </collision>
+    </link>
+    <joint name="${prefix}/wheel_fixed_joint" type="fixed">
+      <parent link="${parent}" />
+      <child link="${prefix}/wheel_link" />
+      <origin xyz="${xyz}"
+        rpy="${rpy}" />
+      <axis
+        xyz="0 0 1" />
+    </joint>
+  </xacro:macro>
+</robot>

@@ -1,0 +1,18 @@
+<launch>
+  <arg name="map_file"  default=" $(find ros_map_edit)/maps/25030901.yaml"/> <!-- willowgarage_world -->
+  <arg name="mnav_file"  default=" $(find ros_map_edit)/params/mnav.yaml"/> <!-- willowgarage_world -->
+  <!--  ****** Maps *****  --> 
+  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)">
+    <param name="frame_id" value="map"/>
+  </node>
+  <node name="virtual_wall_map_publisher" pkg="ros_map_edit" type="virtual_wall_map_publisher.py">
+    <param name="map_file" value="$(arg map_file)"/>
+  </node>
+  <!-- <node name="save_pose" pkg="ros_map_edit" type="save_pose.py" output="screen">
+    <param name="map_file" value="$(arg map_file)"/>
+  </node>
+  <node name="multi_point_navigation" pkg="ros_map_edit" type="multi_point_navigation.py">
+    <param name="map_file" value="$(arg map_file)"/>
+    <param name="mnav_yaml_file" value="$(arg mnav_file)"/>
+  </node> -->
+</launch>

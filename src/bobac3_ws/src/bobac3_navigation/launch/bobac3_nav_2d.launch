@@ -1,0 +1,36 @@
+<launch>
+	<arg name="open_nav_rviz" default="true"/>
+	<arg name="map_file_name" default="home"/>
+	<arg name="location_method" default="amcl" 
+				doc="location type [amcl, cartographer]"/>
+	<arg name="map_directory" default="$(find bobac3_navigation)/maps"/>
+	<!--bobac3 model description-->
+	<include file="$(find bobac3_description)/launch/display.launch">
+		<arg name="open_rviz" value="false"/>
+	</include>
+	<!--bobac3 base-->
+	<include file="$(find rei_robot_base)/launch/base.launch"/>
+	<!--laser sensor-->
+  	<include file="$(find cspc_lidar)/launch/bobac3_lidar.launch" /> 
+	<!--map_server-->
+	<include file="$(find map_manager)/launch/map_load.launch">
+		<arg name="map_file" value="$(arg map_file_name)"/>
+		<arg name="map_directory" value="$(arg map_directory)"/>
+	</include>
+	<!--move_base-->
+	<include file="$(find bobac3_navigation)/launch/move_base.launch"/>
+	<!--location-->
+	<include file="$(find bobac3_navigation)/launch/$(arg location_method).launch">
+	 <arg name="map_file" value="$(arg map_file_name)"/>
+	</include>
+	<!--virtual wall map publisher-->
+	<node name="virtual_wall_map_publisher" pkg="ros_map_edit" type="virtual_wall_map_publisher.py">
+		<param name="map_file" value="$(arg map_directory)/$(arg map_file_name).yaml"/>
+	</node>
+	
+	<!--  **************** Visualisation ****************  -->
+	<group if="$(arg open_nav_rviz)"> 
+		<node pkg="rviz" type="rviz" name="rviz"
+			args="-d $(find bobac3_navigation)/rviz/robot_navigation.rviz"/>
+	</group>
+</launch>

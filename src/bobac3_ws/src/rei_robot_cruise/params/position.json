@@ -1,0 +1,25 @@
+{
+	"clear_old_goal": true,
+	"goals_name": ["home", "room", "work"],
+	"home": {
+		"frame_id": "map",
+		"x": 1,
+		"y": 0,
+		"theta": 0
+	},
+	"room": {
+		"frame_id": "map",
+		"x": 2,
+		"y": -2,
+		"theta": -3.14159
+	},
+	"work": {
+		"frame_id": "map",
+		"x": 0.3,
+		"y": 1,
+		"theta": 2
+	},
+	"nav_order": ["room", "work"],
+	"callback": ["hello", "bye"],
+	"loop_time": 3
+}

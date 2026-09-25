@@ -1,0 +1,7 @@
+<launch>
+    <arg name="map_filename" default="test"/>
+    <arg name="map_directory" default="$(env MAP_DIRECTORY)"/>
+    <node name="map_server" pkg="map_server" type="map_saver" output="screen"
+        args="-f $(arg map_directory)/$(arg map_filename)">
+    </node>
+</launch>

@@ -1,0 +1,9 @@
+<launch>
+  <arg name="map_file"  default="aa"/> <!--地图文件名-->
+  <!--  ****** Maps *****  --> 
+  <node name="map_server" pkg="map_server" type="map_server" 
+    args="$(find bobac3_navigation)/maps/$(arg map_file).yaml">
+    <param name="frame_id" value="map"/>
+  </node>
+
+</launch>

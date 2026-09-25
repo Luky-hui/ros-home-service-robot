@@ -1,0 +1,5 @@
+<launch>
+    <node pkg="relative_move" type="relative_move_node" name="relative_move">
+        <param name="robot_model" type="string" value="omni"/>
+    </node>
+</launch>

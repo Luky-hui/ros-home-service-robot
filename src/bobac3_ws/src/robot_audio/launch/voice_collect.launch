@@ -1,0 +1,5 @@
+<launch>
+  <node name="voice_collect_node" pkg="robot_audio" type="voice_collect_node" output="screen">
+    <param name="audio_file" type="string" value="./AIUI/audio/audio.wav"/>
+  </node>
+</launch>

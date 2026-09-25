@@ -1,0 +1,7 @@
+<library path="lib/librei_nodelet_lidar_fuse">
+  <class name="rei_lidar_fuse/LidarFuse" type="rei_lidar_fuse::LidarFuse" base_class_type="nodelet::Nodelet">
+    <description> 
+      A node to add a value and republish.
+    </description>
+  </class>
+</library>

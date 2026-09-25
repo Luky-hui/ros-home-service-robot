@@ -1,0 +1,4 @@
+string mode #'insert': insert new goal or replace the same name goal, "reset": remove all goals and add these goals 
+rei_robot_cruise/NavGoal[] goals
+---
+bool isSuccess

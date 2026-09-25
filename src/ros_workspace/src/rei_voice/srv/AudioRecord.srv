@@ -1,0 +1,9 @@
+# 音频录制服务请求
+string output_filename  # 输出文件名（可选，默认audio_recording.wav）
+---
+# 音频录制服务响应
+bool success            # 是否成功
+string message          # 状态消息
+float32 duration          # 录制时长（秒）
+string filename         # 实际保存的文件名
+int32 file_size         # 文件大小（字节）

@@ -1,0 +1,16 @@
+k ě y ǐ d ài w ǒ c ān g uān y ī x ià m a :2.00 #0.35 @可以带我参观一下吗
+d ài w ǒ c ān g uān y ī x ià :2.00 #0.35 @带我参观一下
+c ān g uān y ī x ià :1.60 #0.40 @参观一下
+c ān g uān w án l e :1.80 #0.42 @参观完了
+g ěi w ǒ t uī j iàn y ī x ià j īn t iān sh ì h é z uò sh én m e c ài :2.00 #0.35 @给我推荐一下今天适合做什么菜
+g ěi w ǒ t uī j iàn y ī x ià j īn t iān sh ì h é ch ī sh én m e c ài :2.00 #0.35 @给我推荐一下今天适合吃什么菜
+q ù ch ú f áng k àn k àn y ǒu sh én m e :1.80 #0.38 @去厨房看看有什么
+b īng x iāng h ái sh èng sh én m e c ài :1.80 #0.38 @冰箱还剩什么菜
+g ěi w ǒ t uī j iàn y ī x ià j īn t iān sh ì h é ch uān sh én m e :2.00 #0.35 @给我推荐一下今天适合穿什么
+b āng w ǒ zh ǎo y ī x ià sh ǒu j ī :2.00 #0.35 @帮我找一下手机
+b āng w ǒ zh ǎo sh ǒu j ī :1.80 #0.38 @帮我找手机
+b āng w ǒ zh ǎo y ī x ià sh ū b āo :2.00 #0.35 @帮我找一下书包
+b āng w ǒ zh ǎo sh ū b āo :1.80 #0.38 @帮我找书包
+b āng w ǒ zh ǎo y ī x ià b èi b āo :2.00 #0.35 @帮我找一下背包
+b āng w ǒ zh ǎo b èi b āo :1.80 #0.38 @帮我找背包
+b āng w ǒ zh ǎo y ī x ià sh uǐ p íng :1.80 #0.40 @帮我找一下水瓶
